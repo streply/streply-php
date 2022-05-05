@@ -336,6 +336,7 @@ class Record implements EntityInterface
 			'level' => $this->level,
 			'date' => $this->date->format('Y-m-d H:i:s'),
 			'params' => $this->params,
+			'trace' => $this->trace,
 			'release' => $this->release,
 			'environment' => $this->environment,
 			'channel' => $this->channel,
