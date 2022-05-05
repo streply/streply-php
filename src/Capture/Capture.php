@@ -48,7 +48,7 @@ class Capture
 				$trace['line'] ?? null,
 				$trace['function'] ?? null,
 				$trace['class'] ?? null,
-				$trace['args'] ?? null,
+				$trace['args'] ?? [],
 			);
 		}
 
