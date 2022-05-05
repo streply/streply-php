@@ -310,14 +310,24 @@ class Record implements EntityInterface
 		$this->parentExceptionFileName = $parentExceptionFileName;
 	}
 
-	public function addTrace(?string $file = null, ?int $line = null, ?string $function = null, ?string $class = null, array $args = []): void
+	/**
+	 * @param string|null $file
+	 * @param int|null $line
+	 * @param string|null $function
+	 * @param string|null $class
+	 * @param array $args
+	 * @param array $source
+	 * @return void
+	 */
+	public function addTrace(?string $file = null, ?int $line = null, ?string $function = null, ?string $class = null, array $args = [], array $source = []): void
 	{
 		$this->trace[] = [
 			'file' => $file,
 			'line' => $line,
 			'function' => $function,
 			'class' => $class,
-			'args' => $args
+			'args' => $args,
+			'source' => $source
 		];
 	}
 

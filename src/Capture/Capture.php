@@ -9,6 +9,7 @@ use Streamly\Entity\Record;
 use Streamly\Request\Response;
 use Streamly\Request\Handler;
 use Streamly\Exceptions\NotInitializedException;
+use Streamly\CodeSource;
 
 class Capture
 {
@@ -49,6 +50,7 @@ class Capture
 				$trace['function'] ?? null,
 				$trace['class'] ?? null,
 				$trace['args'] ?? [],
+				CodeSource::load($trace['file'], $trace['line'], 30)
 			);
 		}
 
