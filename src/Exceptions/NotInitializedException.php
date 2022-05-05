@@ -2,7 +2,7 @@
 
 namespace Streamly\Exceptions;
 
-class NotInitializedException extends \StreamlyException
+class NotInitializedException extends StreamlyException
 {
 
 }
