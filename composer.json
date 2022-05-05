@@ -1,0 +1,23 @@
+{
+  "name": "streamly/streamly",
+  "type": "library",
+  "description": "A thestreamly.com PHP SDK",
+  "homepage": "https://thestreamly",
+  "authors": [
+    {
+      "name": "Michal Molenda",
+      "email": "michal@codeapps.io"
+    }
+  ],
+  "require": {
+    "php": "^7.4|^8.0"
+  },
+  "autoload": {
+    "files": [
+      "src/functions.php"
+    ],
+    "psr-4": {
+      "Streamly\\": "src/"
+    }
+  }
+}

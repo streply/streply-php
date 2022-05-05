@@ -1,0 +1,149 @@
+<?php
+
+namespace Streamly\Input;
+
+class Http
+{
+	private const DEFAULT_PORT = 80;
+	private const DEFAULT_SCHEME = 'http';
+	private const DEFAULT_METHOD = 'GET';
+
+	/**
+	 * @var array
+	 */
+	private array $request;
+
+	/**
+	 * @param array $request
+	 */
+	public function __construct(array $request)
+	{
+		$this->request = $request;
+	}
+
+	/**
+	 * @param string $name
+	 * @param string|null $default
+	 * @return mixed
+	 */
+	private function get(string $name, ?string $default = null)
+	{
+		return $this->request[$name] ?? $default;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getHost(): ?string
+	{
+		return $this->get('HTTP_HOST');
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getUserAgent(): ?string
+	{
+		return $this->get('HTTP_USER_AGENT');
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getLanguage(): ?string
+	{
+		return $this->get('HTTP_ACCEPT_LANGUAGE');
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getServerName(): ?string
+	{
+		return $this->get('SERVER_NAME');
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getServerSoftware(): ?string
+	{
+		return $this->get('SERVER_SOFTWARE');
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPort(): int
+	{
+		return (int) $this->get('SERVER_PORT', Http::DEFAULT_PORT);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getScheme(): string
+	{
+		return $this->get('REQUEST_SCHEME', Http::DEFAULT_SCHEME);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getMethod(): string
+	{
+		return strtoupper($this->get('REQUEST_METHOD', Http::DEFAULT_METHOD));
+	}
+	/**
+	 * @return string|null
+	 */
+	public function getUri(): ?string
+	{
+		return $this->get('REQUEST_URI');
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function getTime(): ?int
+	{
+		return $this->get('REQUEST_TIME');
+	}
+
+	/**
+	 * @return float|null
+	 */
+	public function getTimeFloat(): ?float
+	{
+		return $this->get('REQUEST_TIME_FLOAT');
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getIp(): ?string
+	{
+		return $this->get('SERVER_ADDR');
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getStatusCode(): int
+	{
+		return http_response_code();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUrl(): string
+	{
+		return sprintf(
+			'%s://%s/%s',
+			isset($_SERVER['HTTPS']) ? 'https' : 'http',
+			$_SERVER['HTTP_HOST'],
+			trim($_SERVER['REQUEST_URI'],'/\\')
+		);
+	}
+}
