@@ -44,14 +44,16 @@ class Capture
 
 		// Trace
 		foreach($exception->getTrace() as $trace) {
-			$record->addTrace(
-				$trace['file'] ?? null,
-				$trace['line'] ?? null,
-				$trace['function'] ?? null,
-				$trace['class'] ?? null,
-				$trace['args'] ?? [],
-				CodeSource::load($trace['file'], $trace['line'], 30)
-			);
+			if(isset($trace['file'], $trace['line'])) {
+				$record->addTrace(
+					$trace['file'],
+					$trace['line'],
+					$trace['function'] ?? null,
+					$trace['class'] ?? null,
+					$trace['args'] ?? [],
+					CodeSource::load($trace['file'], $trace['line'], 30)
+				);
+			}
 		}
 
 		// Push

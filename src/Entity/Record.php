@@ -311,15 +311,15 @@ class Record implements EntityInterface
 	}
 
 	/**
-	 * @param string|null $file
-	 * @param int|null $line
+	 * @param string $file
+	 * @param int $line
 	 * @param string|null $function
 	 * @param string|null $class
 	 * @param array $args
 	 * @param array $source
 	 * @return void
 	 */
-	public function addTrace(?string $file = null, ?int $line = null, ?string $function = null, ?string $class = null, array $args = [], array $source = []): void
+	public function addTrace(string $file, int $line, ?string $function = null, ?string $class = null, array $args = [], array $source = []): void
 	{
 		$this->trace[] = [
 			'file' => $file,
