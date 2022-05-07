@@ -15,12 +15,13 @@ class Logs
 	/**
 	 * Add log to logs array
 	 *
-	 * @param string $message
 	 * @return void
 	 */
-	public static function log(string $message): void
+	public static function log(): void
 	{
-		self::$logs[] = $message;
+		foreach(func_get_args() as $message) {
+			self::$logs[] = $message;
+		}
 	}
 
 	/**
