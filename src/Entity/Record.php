@@ -332,11 +332,11 @@ class Record implements EntityInterface
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function toJson(): string
+	public function toArray(): array
 	{
-		return json_encode([
+		return [
 			'sessionId' => $this->sessionId,
 			'userId' => $this->userId,
 			'status' => $this->status,
@@ -377,6 +377,23 @@ class Record implements EntityInterface
 			'exceptionFileName' => $this->exceptionFileName,
 			'parentExceptionName' => $this->parentExceptionName,
 			'parentExceptionFileName' => $this->parentExceptionFileName,
-		]);
+		];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function toJson(): string
+	{
+		$data = $this->toArray();
+		$data = array_filter($data, function($value) {
+			if(is_array($value)) {
+				return empty($value) === false;
+			}
+
+			return empty($value) === false;
+		});
+
+		return json_encode($data);
 	}
 }
