@@ -333,7 +333,7 @@ class Event implements EntityInterface
 			'function' => $function,
 			'class' => $class,
 			'args' => [],
-			'source' => $source
+			'source' => $source,
 		];
 	}
 
@@ -356,7 +356,7 @@ class Event implements EntityInterface
 			'class' => $class,
 			'type' => $type,
 			'args' => $args,
-			'source' => $source
+			'source' => $source,
 		];
 	}
 
