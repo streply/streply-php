@@ -48,13 +48,17 @@ class CodeSource
 
 			if(isset($file[$line])) {
 				for($i = $line; $i >= $line-$margin; --$i) {
-					$output[$i] = $file[$i];
+					if(isset($file[$i])) {
+						$output[$i] = $file[$i];
+					}
 				}
 
 				$output[$line] = $file[$line];
 
 				for($i = $line; $i <= $line+$margin; ++$i) {
-					$output[$i] = $file[$i];
+					if(isset($file[$i])) {
+						$output[$i] = $file[$i];
+					}
 				}
 			}
 
