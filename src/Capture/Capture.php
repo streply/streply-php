@@ -85,11 +85,11 @@ class Capture
 
 	/**
 	 * @param string $recordId
-	 * @param string $channel
+	 * @param string|null $channel
 	 * @param array $params
 	 * @return Response
 	 */
-	public static function Activity(string $recordId, string $channel, array $params = []): Response
+	public static function Activity(string $recordId, ?string $channel = null, array $params = []): Response
 	{
 		if(Streamly::isInitialize() === false) {
 			\Streamly\Logs\Log('Streamly is not initialized');
