@@ -28,24 +28,24 @@ class Capture
 		}
 
 		// Create record
-		$record = Event::create(CaptureType::TYPE_ERROR, $exception->getMessage(), $params, $level);
-		$record->setFile($exception->getFile());
-		$record->setLine($exception->getLine());
+		$event = Event::create(CaptureType::TYPE_ERROR, $exception->getMessage(), $params, $level);
+		$event->setFile($exception->getFile());
+		$event->setLine($exception->getLine());
 
 		$reflectionClass = new \ReflectionClass($exception);
 
-		$record->setExceptionName($reflectionClass->getName());
-		$record->setExceptionFileName($reflectionClass->getFileName());
+		$event->setExceptionName($reflectionClass->getName());
+		$event->setExceptionFileName($reflectionClass->getFileName());
 
 		if($reflectionClass->getParentClass() !== false) {
-			$record->setParentExceptionName($reflectionClass->getParentClass()->getName());
-			$record->setParentExceptionFileName($reflectionClass->getParentClass()->getFileName());
+			$event->setParentExceptionName($reflectionClass->getParentClass()->getName());
+			$event->setParentExceptionFileName($reflectionClass->getParentClass()->getFileName());
 		}
 
 		// Trace
 		foreach($exception->getTrace() as $trace) {
 			if(isset($trace['file'], $trace['line'])) {
-				$record->addTrace(
+				$event->addTrace(
 					$trace['file'],
 					$trace['line'],
 					$trace['function'] ?? null,
@@ -56,8 +56,20 @@ class Capture
 			}
 		}
 
+		// Debug back trace
+		foreach(debug_backtrace() as $debugBackTrace) {
+			$event->addDebugBackTrace(
+				$debugBackTrace['file'],
+				$debugBackTrace['line'],
+				$debugBackTrace['function'] ?? null,
+				$debugBackTrace['class'] ?? null,
+				$debugBackTrace['type'] ?? null,
+				$debugBackTrace['args'] ?? [],
+			);
+		}
+
 		// Push
-		return Handler::Push($record);
+		return Handler::Push($event);
 	}
 
 	/**
@@ -76,11 +88,23 @@ class Capture
 		}
 
 		// Create record
-		$record = Event::create(CaptureType::TYPE_MESSAGE, $message, $params, $level);
-		$record->setChannel($channel);
+		$event = Event::create(CaptureType::TYPE_MESSAGE, $message, $params, $level);
+		$event->setChannel($channel);
+
+		// Debug back trace
+		foreach(debug_backtrace() as $debugBackTrace) {
+			$event->addDebugBackTrace(
+				$debugBackTrace['file'],
+				$debugBackTrace['line'],
+				$debugBackTrace['function'] ?? null,
+				$debugBackTrace['class'] ?? null,
+				$debugBackTrace['type'] ?? null,
+				$debugBackTrace['args'] ?? [],
+			);
+		}
 
 		// Push
-		return Handler::Push($record);
+		return Handler::Push($event);
 	}
 
 	/**
@@ -98,10 +122,22 @@ class Capture
 		}
 
 		// Create record
-		$record = Event::create(CaptureType::TYPE_ACTIVITY, $recordId, $params);
-		$record->setChannel($channel);
+		$event = Event::create(CaptureType::TYPE_ACTIVITY, $recordId, $params);
+		$event->setChannel($channel);
+
+		// Debug back trace
+		foreach(debug_backtrace() as $debugBackTrace) {
+			$event->addDebugBackTrace(
+				$debugBackTrace['file'],
+				$debugBackTrace['line'],
+				$debugBackTrace['function'] ?? null,
+				$debugBackTrace['class'] ?? null,
+				$debugBackTrace['type'] ?? null,
+				$debugBackTrace['args'] ?? [],
+			);
+		}
 
 		// Push
-		return Handler::Push($record);
+		return Handler::Push($event);
 	}
 }
