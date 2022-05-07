@@ -32,6 +32,7 @@ class Event implements EntityInterface
 	private ?int $httpStatusCode = null;
 	private ?string $url = null;
 	private string $technology;
+	private string $technologyVersion;
 
 	private string $requestHost;
 	private string $requestUserAgent;
@@ -97,6 +98,7 @@ class Event implements EntityInterface
 		$this->level = \Streamly\Enum\Level::NORMAL;
 		$this->date = $now;
 		$this->technology = 'php';
+		$this->technologyVersion = PHP_VERSION;
 		$this->params = [];
 		$this->dateTimeZone = $now->getTimezone();
 		$this->environment = $options->get('environment', null);
@@ -358,6 +360,7 @@ class Event implements EntityInterface
 			'httpStatusCode' => $this->httpStatusCode,
 			'url' => $this->url,
 			'technology' => $this->technology,
+			'technologyVersion' => $this->technologyVersion,
 			'requestHost' => $this->requestHost,
 			'requestUserAgent' => $this->requestUserAgent,
 			'requestLanguage' => $this->requestLanguage,
