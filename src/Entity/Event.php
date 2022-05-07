@@ -21,6 +21,7 @@ class Event implements EntityInterface
 	private string $message;
 	private string $level;
 	private \DateTime $date;
+	private float $time;
 	private array $params;
 	private array $trace = [];
 
@@ -99,6 +100,7 @@ class Event implements EntityInterface
 		$this->status = 0;
 		$this->level = \Streamly\Enum\Level::NORMAL;
 		$this->date = $now;
+		$this->time = hrtime(true);
 		$this->technology = 'php';
 		$this->technologyVersion = PHP_VERSION;
 		$this->params = [];
@@ -375,6 +377,7 @@ class Event implements EntityInterface
 			'message' => $this->message,
 			'level' => $this->level,
 			'date' => $this->date->format('Y-m-d H:i:s'),
+			'time' => $this->time,
 			'params' => $this->params,
 			'trace' => $this->trace,
 			'release' => $this->release,
