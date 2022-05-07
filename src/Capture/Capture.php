@@ -134,6 +134,7 @@ class Capture
 				$debugBackTrace['class'] ?? null,
 				$debugBackTrace['type'] ?? null,
 				$debugBackTrace['args'] ?? [],
+				CodeSource::load($debugBackTrace['file'], $debugBackTrace['line'], 30)
 			);
 		}
 

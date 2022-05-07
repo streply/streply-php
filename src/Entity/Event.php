@@ -344,9 +344,10 @@ class Event implements EntityInterface
 	 * @param string|null $class
 	 * @param string|null $type
 	 * @param array $args
+	 * @param array $source
 	 * @return void
 	 */
-	public function addDebugBackTrace(string $file, int $line, ?string $function, ?string $class, ?string $type, array $args = []): void
+	public function addDebugBackTrace(string $file, int $line, ?string $function, ?string $class, ?string $type, array $args = [], array $source = []): void
 	{
 		$this->debugBackTrace[] = [
 			'file' => $file,
@@ -354,7 +355,8 @@ class Event implements EntityInterface
 			'function' => $function,
 			'class' => $class,
 			'type' => $type,
-			'args' => $args
+			'args' => $args,
+			'source' => $source
 		];
 	}
 
