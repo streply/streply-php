@@ -17,9 +17,9 @@ class Dsn
 	private string $server;
 
 	/**
-	 * @var string
+	 * @var int
 	 */
-	private string $projectId;
+	private int $projectId;
 
 	/**
 	 * @var string
@@ -89,7 +89,7 @@ class Dsn
 		$this->server 		= $parsedDsn['host'];
 		$this->port			= $parsedDsn['port'] ?? ('http' === $parsedDsn['scheme'] ? 80 : 443);
 		$this->publicKey 	= $parsedDsn['user'];
-		$this->projectId 	= $paths[0];
+		$this->projectId 	= (int) $paths[0];
 	}
 
 	/**
@@ -125,9 +125,9 @@ class Dsn
 	}
 
 	/**
-	 * @return string
+	 * @return int
 	 */
-	public function getProjectId(): string
+	public function getProjectId(): int
 	{
 		return $this->projectId;
 	}

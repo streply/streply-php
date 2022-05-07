@@ -17,7 +17,7 @@ class Event implements EntityInterface
 	private string $userId;
 	private int $status;
 	private string $type;
-	private string $projectId;
+	private int $projectId;
 	private string $message;
 	private string $level;
 	private \DateTime $date;
