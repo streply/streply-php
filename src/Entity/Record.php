@@ -326,7 +326,7 @@ class Record implements EntityInterface
 			'line' => $line,
 			'function' => $function,
 			'class' => $class,
-			'args' => $args,
+			'args' => [],
 			'source' => $source
 		];
 	}
