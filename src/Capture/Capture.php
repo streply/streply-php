@@ -13,6 +13,8 @@ use Streamly\CodeSource;
 
 class Capture
 {
+	private const SOURCE_LINE_NUMBERS = 30;
+
 	/**
 	 * @param \Exception $exception
 	 * @param array $params
@@ -51,7 +53,7 @@ class Capture
 					$trace['function'] ?? null,
 					$trace['class'] ?? null,
 					$trace['args'] ?? [],
-					CodeSource::load($trace['file'], $trace['line'], 30)
+					CodeSource::load($trace['file'], $trace['line'], self::SOURCE_LINE_NUMBERS)
 				);
 			}
 		}
@@ -65,6 +67,7 @@ class Capture
 				$debugBackTrace['class'] ?? null,
 				$debugBackTrace['type'] ?? null,
 				$debugBackTrace['args'] ?? [],
+				CodeSource::load($debugBackTrace['file'], $debugBackTrace['line'], self::SOURCE_LINE_NUMBERS)
 			);
 		}
 
@@ -100,6 +103,7 @@ class Capture
 				$debugBackTrace['class'] ?? null,
 				$debugBackTrace['type'] ?? null,
 				$debugBackTrace['args'] ?? [],
+				CodeSource::load($debugBackTrace['file'], $debugBackTrace['line'], self::SOURCE_LINE_NUMBERS)
 			);
 		}
 
@@ -134,7 +138,7 @@ class Capture
 				$debugBackTrace['class'] ?? null,
 				$debugBackTrace['type'] ?? null,
 				$debugBackTrace['args'] ?? [],
-				CodeSource::load($debugBackTrace['file'], $debugBackTrace['line'], 30)
+				CodeSource::load($debugBackTrace['file'], $debugBackTrace['line'], self::SOURCE_LINE_NUMBERS)
 			);
 		}
 
