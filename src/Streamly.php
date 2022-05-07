@@ -6,6 +6,7 @@ use Streamly\Input\Dsn;
 use Streamly\Input\Options;
 use Streamly\Input\Http;
 use Streamly\Input\Server;
+use Streamly\Session;
 
 class Streamly
 {
@@ -35,6 +36,11 @@ class Streamly
 	private static ?Server $server = null;
 
 	/**
+	 * @var string
+	 */
+	private static string $traceId;
+
+	/**
 	 *
 	 */
 	protected function __construct() { }
@@ -56,6 +62,7 @@ class Streamly
 		self::$options = new Options($options);
 		self::$http = new Http($_SERVER);
 		self::$server = new Server();
+		self::$traceId = Session::traceId();
 
 		self::getInstance();
 
@@ -65,6 +72,14 @@ class Streamly
 				$dsn
 			)
 		);
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getTraceId(): string
+	{
+		return self::$traceId;
 	}
 
 	/**

@@ -31,6 +31,14 @@ class Session
 	/**
 	 * @return string
 	 */
+	public static function traceId(): string
+	{
+		return self::generateRandomId();
+	}
+
+	/**
+	 * @return string
+	 */
 	public static function sessionId(): string
 	{
 		if(isset($_COOKIE[Session::SESSION_ID_COOKIE])) {
