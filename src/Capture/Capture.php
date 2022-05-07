@@ -19,9 +19,9 @@ class Capture
 	 * @param \Exception $exception
 	 * @param array $params
 	 * @param string $level
-	 * @return Response
+	 * @return void
 	 */
-	public static function Error(\Exception $exception, array $params = [], string $level = Level::NORMAL): Response
+	public static function Error(\Exception $exception, array $params = [], string $level = Level::NORMAL): void
 	{
 		if(Streamly::isInitialize() === false) {
 			\Streamly\Logs\Log('Streamly is not initialized');
@@ -72,7 +72,7 @@ class Capture
 		}
 
 		// Push
-		return Handler::Push($event);
+		Handler::Handle($event);
 	}
 
 	/**
@@ -80,9 +80,9 @@ class Capture
 	 * @param array $params
 	 * @param string|null $channel
 	 * @param string $level
-	 * @return Response
+	 * @return void
 	 */
-	public static function Message(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): Response
+	public static function Message(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): void
 	{
 		if(Streamly::isInitialize() === false) {
 			\Streamly\Logs\Log('Streamly is not initialized');
@@ -108,16 +108,16 @@ class Capture
 		}
 
 		// Push
-		return Handler::Push($event);
+		Handler::Handle($event);
 	}
 
 	/**
 	 * @param string $recordId
 	 * @param string|null $channel
 	 * @param array $params
-	 * @return Response
+	 * @return void
 	 */
-	public static function Activity(string $recordId, ?string $channel = null, array $params = []): Response
+	public static function Activity(string $recordId, ?string $channel = null, array $params = []): void
 	{
 		if(Streamly::isInitialize() === false) {
 			\Streamly\Logs\Log('Streamly is not initialized');
@@ -143,6 +143,6 @@ class Capture
 		}
 
 		// Push
-		return Handler::Push($event);
+		Handler::Handle($event);
 	}
 }

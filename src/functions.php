@@ -24,11 +24,11 @@ function Initialize(string $dsn, array $options = [])
  * @param \Exception $exception
  * @param array $params
  * @param string $level
- * @return Response
+ * @return void
  */
-function Exception(\Exception $exception, array $params = [], string $level = Level::NORMAL): Response
+function Exception(\Exception $exception, array $params = [], string $level = Level::NORMAL): void
 {
-	return Capture::Error($exception, $params, $level);
+	Capture::Error($exception, $params, $level);
 }
 
 /**
@@ -36,22 +36,22 @@ function Exception(\Exception $exception, array $params = [], string $level = Le
  * @param array $params
  * @param string|null $channel
  * @param string $level
- * @return Response
+ * @return void
  */
-function Message(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): Response
+function Message(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): void
 {
-	return Capture::Message($message, $params, $channel, $level);
+	Capture::Message($message, $params, $channel, $level);
 }
 
 /**
  * @param string $recordId
  * @param string|null $channel
  * @param array $params
- * @return Response
+ * @return void
  */
-function Activity(string $recordId, ?string $channel = null, array $params = []): Response
+function Activity(string $recordId, ?string $channel = null, array $params = []): void
 {
-	return Capture::Activity($recordId, $channel, $params);
+	Capture::Activity($recordId, $channel, $params);
 }
 
 /**
@@ -71,4 +71,12 @@ function Log(string $message)
 function Logs(): array
 {
 	return Logs::all();
+}
+
+/**
+ * @return void
+ */
+function Close(): void
+{
+	Streamly::Close();
 }

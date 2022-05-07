@@ -7,6 +7,10 @@ use Streamly\Input\Options;
 use Streamly\Input\Http;
 use Streamly\Input\Server;
 use Streamly\Session;
+use Streamly\Store\Store;
+use Streamly\Store\Providers\RequestProvider;
+use Streamly\Store\Providers\StoreProviderInterface;
+use Streamly\Entity\Event;
 
 class Streamly
 {
@@ -58,6 +62,10 @@ class Streamly
 	 */
 	public static function Initialize(string $dsn, array $options = []): void
 	{
+		if(isset($options['storeProvider']) === false || !($options['storeProvider'] instanceof StoreProviderInterface)) {
+			$options['storeProvider'] = new RequestProvider();
+		}
+		
 		self::$dsn = new Dsn($dsn);
 		self::$options = new Options($options);
 		self::$http = new Http($_SERVER);
@@ -120,6 +128,18 @@ class Streamly
 	public static function getServer(): Server
 	{
 		return self::$server;
+	}
+
+	/**
+	 * @return void
+	 */
+	public static function Close(): void
+	{
+		$store = new Store(Streamly::$options->get('storeProvider'));
+
+		$store->close(Streamly::getTraceId());
+
+		\Streamly\Log('Close');
 	}
 
 	/**

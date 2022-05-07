@@ -37,7 +37,6 @@ class Event implements EntityInterface
 
 	private string $requestHost;
 	private string $requestUserAgent;
-	private string $requestLanguage;
 	private string $requestServer;
 	private string $requestServerName;
 	private int $requestPort;
@@ -110,7 +109,6 @@ class Event implements EntityInterface
 		$this->projectId = $dsn->getProjectId();
 		$this->requestHost = $http->getHost();
 		$this->requestUserAgent = $http->getUserAgent();
-		$this->requestLanguage = $http->getLanguage();
 		$this->requestServerName = $http->getServerName();
 		$this->requestServer = $http->getServerSoftware();
 		$this->requestPort = $http->getPort();
@@ -148,6 +146,22 @@ class Event implements EntityInterface
 	public function addParam(string $name, $value): void
 	{
 		$this->params[] = ['name' => $name, 'value' => $value];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTraceId(): string
+	{
+		return $this->traceId;
+	}
+
+	/**
+	 * @param string $traceId
+	 */
+	public function setTraceId(string $traceId): void
+	{
+		$this->traceId = $traceId;
 	}
 
 	/**
@@ -391,7 +405,6 @@ class Event implements EntityInterface
 			'technologyVersion' => $this->technologyVersion,
 			'requestHost' => $this->requestHost,
 			'requestUserAgent' => $this->requestUserAgent,
-			'requestLanguage' => $this->requestLanguage,
 			'requestServer' => $this->requestServer,
 			'requestServerName' => $this->requestServerName,
 			'requestPort' => $this->requestPort,
