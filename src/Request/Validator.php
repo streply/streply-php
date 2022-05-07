@@ -4,7 +4,7 @@ namespace Streamly\Request;
 
 use Streamly\Enum\CaptureType;
 use Streamly\Enum\Level;
-use Streamly\Entity\Record;
+use Streamly\Entity\Event;
 
 class Validator
 {
@@ -14,28 +14,28 @@ class Validator
 	private ?string $output = null;
 
 	/**
-	 * @param Record $record
+	 * @param Event $event
 	 * @return bool
 	 */
-	public function isValid(Record $record): bool
+	public function isValid(Event $event): bool
 	{
 		// Invalid record type
-		if(in_array($record->getType(), CaptureType::all(), true) === false) {
-			$this->output = sprintf('%s is a invalid type', $record->getType());
+		if(in_array($event->getType(), CaptureType::all(), true) === false) {
+			$this->output = sprintf('%s is a invalid type', $event->getType());
 
 			return false;
 		}
 
 		// Level
-		if(in_array($record->getLevel(), Level::all(), true) === false) {
-			$this->output = sprintf('%s is a invalid level', $record->getLevel());
+		if(in_array($event->getLevel(), Level::all(), true) === false) {
+			$this->output = sprintf('%s is a invalid level', $event->getLevel());
 
 			return false;
 		}
 
 		// Params structure
-		if(empty($record->getParams()) === false) {
-			foreach($record->getParams() as $param) {
+		if(empty($event->getParams()) === false) {
+			foreach($event->getParams() as $param) {
 				if(
 					is_string($param['value']) === false &&
 					is_int($param['value']) === false &&

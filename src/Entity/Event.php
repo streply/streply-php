@@ -10,7 +10,7 @@ use Streamly\Input\Server;
 use Streamly\Enum\Level;
 use Streamly\Streamly;
 
-class Record implements EntityInterface
+class Event implements EntityInterface
 {
 	private string $sessionId;
 	private string $userId;
@@ -62,11 +62,11 @@ class Record implements EntityInterface
 	 * @param string $message
 	 * @param array $params
 	 * @param string $level
-	 * @return Record
+	 * @return Event
 	 */
-	public static function create(string $type, string $message, array $params = [], string $level = Level::NORMAL): Record
+	public static function create(string $type, string $message, array $params = [], string $level = Level::NORMAL): Event
 	{
-		$record = new Record(
+		$record = new Event(
 			Streamly::getOptions(),
 			Streamly::getDsn(),
 			Streamly::getHttp(),

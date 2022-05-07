@@ -2,21 +2,21 @@
 
 namespace Streamly\Request;
 
-use Streamly\Entity\Record;
+use Streamly\Entity\Event;
 use Streamly\Exception\InvalidRequestException;
 use Streamly\Streamly;
 
 class Handler
 {
 	/**
-	 * @param Record $record
+	 * @param Event $event
 	 * @return Response
 	 */
-	public static function Push(Record $record): Response
+	public static function Push(Event $event): Response
 	{
 		$validator = new Validator();
 
-		if($validator->isValid($record) === false) {
+		if($validator->isValid($event) === false) {
 			throw new InvalidRequestException($validator->output());
 		}
 
@@ -24,16 +24,16 @@ class Handler
 		\Streamly\Log(
 			sprintf(
 				'Capture type:%s, message:%s, level:%s',
-				$record->getType(),
-				$record->getMessage(),
-				$record->getLevel(),
+				$event->getType(),
+				$event->getMessage(),
+				$event->getLevel(),
 			)
 		);
 
 		// Send request
 		$url = Streamly::getDsn()->getApiUrl();
 		$ch = curl_init($url);
-		$input = $record->toJson();
+		$input = $event->toJson();
 
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');

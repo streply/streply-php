@@ -5,7 +5,7 @@ namespace Streamly\Capture;
 use Streamly\Enum\Level;
 use Streamly\Enum\CaptureType;
 use Streamly\Streamly;
-use Streamly\Entity\Record;
+use Streamly\Entity\Event;
 use Streamly\Request\Response;
 use Streamly\Request\Handler;
 use Streamly\Exceptions\NotInitializedException;
@@ -28,7 +28,7 @@ class Capture
 		}
 
 		// Create record
-		$record = Record::create(CaptureType::TYPE_ERROR, $exception->getMessage(), $params, $level);
+		$record = Event::create(CaptureType::TYPE_ERROR, $exception->getMessage(), $params, $level);
 		$record->setFile($exception->getFile());
 		$record->setLine($exception->getLine());
 
@@ -76,7 +76,7 @@ class Capture
 		}
 
 		// Create record
-		$record = Record::create(CaptureType::TYPE_MESSAGE, $message, $params, $level);
+		$record = Event::create(CaptureType::TYPE_MESSAGE, $message, $params, $level);
 		$record->setChannel($channel);
 
 		// Push
@@ -98,7 +98,7 @@ class Capture
 		}
 
 		// Create record
-		$record = Record::create(CaptureType::TYPE_ACTIVITY, $recordId, $params);
+		$record = Event::create(CaptureType::TYPE_ACTIVITY, $recordId, $params);
 		$record->setChannel($channel);
 
 		// Push
