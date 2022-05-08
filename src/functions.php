@@ -44,14 +44,14 @@ function Message(string $message, array $params = [], ?string $channel = null, s
 }
 
 /**
- * @param string $recordId
+ * @param string $message
  * @param string|null $channel
  * @param array $params
  * @return void
  */
-function Activity(string $recordId, ?string $channel = null, array $params = []): void
+function Activity(string $message, ?string $channel = null, array $params = []): void
 {
-	Capture::Activity($recordId, $channel, $params);
+	Capture::Activity($message, $channel, $params);
 }
 
 /**
