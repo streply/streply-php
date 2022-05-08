@@ -74,6 +74,10 @@ class Streamly
 
 		self::getInstance();
 
+		// Event
+		Activity('streamly.initialize');
+
+		// Log
 		\Streamly\Log(
 			sprintf(
 				'Initialize for %s',
@@ -135,10 +139,14 @@ class Streamly
 	 */
 	public static function Close(): void
 	{
-		$store = new Store(Streamly::$options->get('storeProvider'));
+		// Event
+		Activity('streamly.close');
 
+		// Close
+		$store = new Store(Streamly::$options->get('storeProvider'));
 		$store->close(Streamly::getTraceId());
 
+		// Log
 		\Streamly\Log('Close');
 	}
 
