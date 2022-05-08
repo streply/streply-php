@@ -16,7 +16,14 @@ class Handler
 	 */
 	private static function isAllowedRequest(Event $event): bool
 	{
-		if(strpos($event->getRequestUri(), '/favicon.') !== false) {
+		if(
+			strpos($event->getRequestUri(), '/favicon.') !== false ||
+			strpos($event->getRequestUri(), 'apple-touch-icon.png') !== false ||
+			strpos($event->getRequestUri(), 'apple-touch-icon-precomposed.png') !== false ||
+			strpos($event->getRequestUri(), 'sitemap.txt') !== false ||
+			strpos($event->getRequestUri(), 'sitemap.xml') !== false ||
+			strpos($event->getRequestUri(), 'robots.txt') !== false
+		) {
 			return false;
 		}
 
