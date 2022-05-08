@@ -93,9 +93,9 @@ class Event implements EntityInterface
 	{
 		$now = new \DateTime();
 
-		$this->traceId = Streamly::getTraceId();
-		$this->sessionId = Session::sessionId();
-		$this->userId = Session::userId();
+		$this->traceId = Streamly::traceId();
+		$this->sessionId = Streamly::sessionId();
+		$this->userId = Streamly::userId();
 		$this->status = 0;
 		$this->level = \Streamly\Enum\Level::NORMAL;
 		$this->date = $now;

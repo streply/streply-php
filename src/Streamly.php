@@ -45,6 +45,16 @@ class Streamly
 	private static string $traceId;
 
 	/**
+	 * @var string
+	 */
+	private static string $sessionId;
+
+	/**
+	 * @var string
+	 */
+	private static string $userId;
+
+	/**
 	 *
 	 */
 	protected function __construct() { }
@@ -71,6 +81,8 @@ class Streamly
 		self::$http = new Http($_SERVER);
 		self::$server = new Server();
 		self::$traceId = Session::traceId();
+		self::$sessionId = Session::sessionId();
+		self::$userId = Session::userId();
 
 		self::getInstance();
 
@@ -89,9 +101,25 @@ class Streamly
 	/**
 	 * @return string
 	 */
-	public static function getTraceId(): string
+	public static function traceId(): string
 	{
 		return self::$traceId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function sessionId(): string
+	{
+		return self::$sessionId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function userId(): string
+	{
+		return self::$userId;
 	}
 
 	/**
@@ -144,7 +172,7 @@ class Streamly
 
 		// Close
 		$store = new Store(Streamly::$options->get('storeProvider'));
-		$store->close(Streamly::getTraceId());
+		$store->close(Streamly::traceId());
 
 		// Log
 		\Streamly\Log('Close');
