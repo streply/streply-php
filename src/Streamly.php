@@ -87,7 +87,9 @@ class Streamly
 		self::getInstance();
 
 		// Event
-		Activity('streamly.initialize');
+		if(self::getOptions()->get('initializeRequest', true) === true) {
+			Activity('streamly.initialize');
+		}
 
 		// Log
 		\Streamly\Log(
@@ -168,7 +170,9 @@ class Streamly
 	public static function Close(): void
 	{
 		// Event
-		Activity('streamly.close');
+		if(self::getOptions()->get('initializeRequest', true) === true) {
+			Activity('streamly.close');
+		}
 
 		// Close
 		$store = new Store(Streamly::$options->get('storeProvider'));
