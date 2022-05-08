@@ -12,17 +12,32 @@ class Handler
 {
 	/**
 	 * @param Event $event
+	 * @return bool
+	 */
+	private static function isAllowedRequest(Event $event): bool
+	{
+		if(strpos($event->getRequestUri(), '/favicon.') !== false) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param Event $event
 	 * @return void
 	 */
 	public static function Handle(Event $event): void
 	{
-		$storeProvider = Streamly::getOptions()->get('storeProvider');
+		if(self::isAllowedRequest($event)) {
+			$storeProvider = Streamly::getOptions()->get('storeProvider');
 
-		if(!($storeProvider instanceof StoreProviderInterface)) {
-			throw new StreamlyException('Invalid store provider');
+			if(!($storeProvider instanceof StoreProviderInterface)) {
+				throw new StreamlyException('Invalid store provider');
+			}
+
+			$store = new Store($storeProvider);
+			$store->push($event);
 		}
-
-		$store = new Store($storeProvider);
-		$store->push($event);
 	}
 }

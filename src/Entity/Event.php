@@ -333,6 +333,14 @@ class Event implements EntityInterface
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getRequestUri(): string
+	{
+		return $this->requestUri;
+	}
+
+	/**
 	 * @param string $file
 	 * @param int $line
 	 * @param string|null $function
