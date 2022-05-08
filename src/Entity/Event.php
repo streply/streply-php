@@ -35,10 +35,8 @@ class Event implements EntityInterface
 	private string $technology;
 	private string $technologyVersion;
 
-	private string $requestHost;
 	private string $requestUserAgent;
 	private string $requestServer;
-	private string $requestServerName;
 	private int $requestPort;
 	private string $requestScheme;
 	private string $requestMethod;
@@ -107,9 +105,7 @@ class Event implements EntityInterface
 		$this->environment = $options->get('environment', null);
 		$this->release = $options->get('release', null);
 		$this->projectId = $dsn->getProjectId();
-		$this->requestHost = $http->getHost();
 		$this->requestUserAgent = $http->getUserAgent();
-		$this->requestServerName = $http->getServerName();
 		$this->requestServer = $http->getServerSoftware();
 		$this->requestPort = $http->getPort();
 		$this->requestScheme = $http->getScheme();
@@ -411,10 +407,8 @@ class Event implements EntityInterface
 			'url' => $this->url,
 			'technology' => $this->technology,
 			'technologyVersion' => $this->technologyVersion,
-			'requestHost' => $this->requestHost,
 			'requestUserAgent' => $this->requestUserAgent,
 			'requestServer' => $this->requestServer,
-			'requestServerName' => $this->requestServerName,
 			'requestPort' => $this->requestPort,
 			'requestScheme' => $this->requestScheme,
 			'requestMethod' => $this->requestMethod,
