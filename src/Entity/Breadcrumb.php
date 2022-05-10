@@ -66,7 +66,7 @@ class Breadcrumb implements EntityInterface
 		$this->message = $message;
 		$this->params = $params;
 		$this->date = new \DateTime();
-		$this->time = hrtime(true);
+		$this->time = microtime(true);
 	}
 
 	/**

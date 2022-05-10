@@ -103,7 +103,7 @@ class Event implements EntityInterface
 		$this->status = 0;
 		$this->level = \Streamly\Enum\Level::NORMAL;
 		$this->date = $now;
-		$this->time = hrtime(true);
+		$this->time = microtime(true);
 		$this->technology = 'php';
 		$this->technologyVersion = PHP_VERSION;
 		$this->params = [];
