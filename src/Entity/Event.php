@@ -13,6 +13,7 @@ use Streamly\Streamly;
 class Event implements EntityInterface
 {
 	private string $traceId;
+	private string $traceUniqueId;
 	private string $sessionId;
 	private string $userId;
 	private int $status;
@@ -92,6 +93,7 @@ class Event implements EntityInterface
 		$now = new \DateTime();
 
 		$this->traceId = Streamly::traceId();
+		$this->traceUniqueId = Streamly::traceUniqueId();
 		$this->sessionId = Streamly::sessionId();
 		$this->userId = Streamly::userId();
 		$this->status = 0;
@@ -387,6 +389,7 @@ class Event implements EntityInterface
 	{
 		return [
 			'traceId' => $this->traceId,
+			'traceUniqueId' => $this->traceUniqueId,
 			'sessionId' => $this->sessionId,
 			'userId' => $this->userId,
 			'status' => $this->status,

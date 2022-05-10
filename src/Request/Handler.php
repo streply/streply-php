@@ -45,6 +45,9 @@ class Handler
 
 			$store = new Store($storeProvider);
 			$store->push($event);
+
+			// Increase trace unique ID
+			Streamly::increaseTraceUniqueId();
 		}
 	}
 }

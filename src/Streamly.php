@@ -15,6 +15,11 @@ use Streamly\Entity\Event;
 class Streamly
 {
 	/**
+	 *
+	 */
+	private const UNIQUE_TRACE_ID_FORMAT = '%s_%d';
+
+	/**
 	 * @var Streamly|null
 	 */
 	private static ?self $instance = null;
@@ -43,6 +48,11 @@ class Streamly
 	 * @var string
 	 */
 	private static string $traceId;
+
+	/**
+	 * @var int
+	 */
+	private static int $traceUniqueId;
 
 	/**
 	 * @var string
@@ -83,6 +93,7 @@ class Streamly
 		self::$traceId = Session::traceId();
 		self::$sessionId = Session::sessionId();
 		self::$userId = Session::userId();
+		self::$traceUniqueId = 1;
 
 		self::getInstance();
 
@@ -106,6 +117,22 @@ class Streamly
 	public static function traceId(): string
 	{
 		return self::$traceId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function traceUniqueId(): string
+	{
+		return sprintf(self::UNIQUE_TRACE_ID_FORMAT, self::$traceId, self::$traceUniqueId);
+	}
+
+	/**
+	 * @return void
+	 */
+	public static function increaseTraceUniqueId(): void
+	{
+		++self::$traceUniqueId;
 	}
 
 	/**
