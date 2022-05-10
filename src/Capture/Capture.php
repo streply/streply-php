@@ -113,12 +113,12 @@ class Capture
 	}
 
 	/**
-	 * @param string $recordId
+	 * @param string $message
 	 * @param string|null $channel
 	 * @param array $params
 	 * @return void
 	 */
-	public static function Activity(string $recordId, ?string $channel = null, array $params = []): void
+	public static function Activity(string $message, ?string $channel = null, array $params = []): void
 	{
 		if(Streamly::isInitialize() === false) {
 			\Streamly\Log('Streamly is not initialized');
@@ -127,7 +127,7 @@ class Capture
 		}
 
 		// Create record
-		$event = Event::create(CaptureType::TYPE_ACTIVITY, $recordId, $params);
+		$event = Event::create(CaptureType::TYPE_ACTIVITY, $message, $params);
 		$event->setChannel($channel);
 
 		// Debug back trace
