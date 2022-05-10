@@ -27,8 +27,6 @@ Streamly\Initialize(
 Streamly\Initialize(
     'https://clientPublicKey@api.thestreamly.com/1',
     [
-        'release' => 'my-project-name@2.3.12',
-        'environment' => 'production',
         'storeProvider' => new Streamly\Store\Providers\FileProvider(
             __DIR__ . '/store'
         )
@@ -41,7 +39,30 @@ Available providers:
 - RequestProvider - Send requests immediately
 - FileProvider - Storage requests in files and sends all requests after calling the function `Streamly\Close();`
 
-## Exception
+### Filter events before send
+
+```php
+<?php
+
+use Streamly\Entity\Event;
+
+Streamly\Initialize(
+    'http://clientPublicKey@api.streamly.local:8888/123',
+    [
+        'filterBeforeSend' => function(Event $event): bool {
+            if($event->getMessage() === 'someMessage') {
+                return false;
+            }
+            
+            return true;
+        }
+    ]
+);
+```
+
+## Capture
+
+### Exception
 
 ```php
 <?php
@@ -55,7 +76,7 @@ try {
 }
 ```
 
-## Activity
+### Activity
 
 ```php
 <?php
@@ -65,7 +86,7 @@ Streamly\Activity('message', 'channel', [
 ]);
 ```
 
-## Messages
+### Messages
 
 ```php
 <?php
@@ -79,6 +100,30 @@ Streamly\Message(
     Streamly\Enum\Level::CRITICAL
 );
 ```
+
+### Capture levels
+
+- `Level::CRITICAL`
+- `Level::HIGH`
+- `Level::NORMAL`
+- `Level::LOW`
+
+## Breadcrumbs
+
+```php
+<?php
+
+use Streamly\Enum\BreadcrumbType;
+
+Streamly\Activity('someActivity');
+
+Streamly\Breadcrumb(BreadcrumbType::INFO, 'firstBreadcrumb for someActivity');
+Streamly\Breadcrumb(BreadcrumbType::DEBUG, 'secondBreadcrumb for someActivity', [
+    'parameterName' => 'parameterValue'
+]);
+```
+
+Available types: `BreadcrumbType::INFO`, `BreadcrumbType::DEBUG`, `BreadcrumbType::ERROR` and `BreadcrumbType::QUERY`.
 
 ## Display logs
 
