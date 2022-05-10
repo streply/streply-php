@@ -497,7 +497,8 @@ class Event implements EntityInterface
 			strpos($this->getRequestUri(), 'apple-touch-icon-precomposed.png') !== false ||
 			strpos($this->getRequestUri(), 'sitemap.txt') !== false ||
 			strpos($this->getRequestUri(), 'sitemap.xml') !== false ||
-			strpos($this->getRequestUri(), 'robots.txt') !== false
+			strpos($this->getRequestUri(), 'robots.txt') !== false ||
+			strpos($this->getRequestUri(), '/_wdt') !== false
 		) {
 			return false;
 		}
