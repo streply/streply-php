@@ -7,6 +7,21 @@ composer require streamly/streamly
 ```
 ## Initialization
 
+Fast initialization:
+
+```php
+<?php
+
+Streamly\Initialize('https://clientPublicKey@api.thestreamly.com/1');
+```
+
+Where:
+
+- `clientPublicKey` your public API key
+- `1` your project ID
+
+Initialization with parameters:
+
 ```php
 <?php
 
