@@ -4,8 +4,8 @@ namespace Streamly\Store;
 
 use Streamly\Store\Providers\StoreProviderInterface;
 use Streamly\Entity\Event;
+use Streamly\Entity\EntityInterface;
 use Streamly\Exceptions\InvalidRequestException;
-use Streamly\Request\Validator;
 
 class Store
 {
@@ -23,27 +23,16 @@ class Store
 	}
 
 	/**
-	 * @param Event $event
+	 * @param EntityInterface $event
 	 * @return void
 	 */
-	public function push(Event $event): void
+	public function push(EntityInterface $event): void
 	{
-		$validator = new Validator();
+		$validationError = $event->getValidationError();
 
-		if($validator->isValid($event) === false) {
-			throw new InvalidRequestException($validator->output());
+		if($validationError !== null) {
+			throw new InvalidRequestException($validationError);
 		}
-
-		// Create log
-		\Streamly\Log(
-			sprintf(
-				'Capture type:%s, message:%s, level:%s, provider:%s',
-				$event->getType(),
-				$event->getMessage(),
-				$event->getLevel(),
-				$this->storeProvider->name()
-			)
-		);
 
 		$this->storeProvider->push($event);
 	}

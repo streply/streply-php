@@ -2,7 +2,7 @@
 
 namespace Streamly\Store\Providers;
 
-use Streamly\Entity\Event;
+use Streamly\Entity\EntityInterface;
 
 interface StoreProviderInterface
 {
@@ -12,10 +12,10 @@ interface StoreProviderInterface
 	public function name(): string;
 
 	/**
-	 * @param Event $event
+	 * @param EntityInterface $event
 	 * @return void
 	 */
-	public function push(Event $event): void;
+	public function push(EntityInterface $event): void;
 
 	/**
 	 * @param string $traceId

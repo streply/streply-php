@@ -93,14 +93,9 @@ class Streamly
 		self::$traceId = Session::traceId();
 		self::$sessionId = Session::sessionId();
 		self::$userId = Session::userId();
-		self::$traceUniqueId = 1;
+		self::$traceUniqueId = 0;
 
 		self::getInstance();
-
-		// Event
-		if(self::getOptions()->get('initializeRequest', true) === true) {
-			Activity('streamly.initialize');
-		}
 
 		// Log
 		\Streamly\Log(
@@ -109,6 +104,11 @@ class Streamly
 				$dsn
 			)
 		);
+
+		// Event
+		if(self::getOptions()->get('initializeRequest', true) === true) {
+			Activity('streamly.initialize');
+		}
 	}
 
 	/**

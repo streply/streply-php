@@ -3,7 +3,7 @@
 namespace Streamly\Store\Providers;
 
 use Streamly\Exceptions\StreamlyException;
-use Streamly\Entity\Event;
+use Streamly\Entity\EntityInterface;
 use Streamly\Store\Providers\RequestProvider;
 use Streamly\Request\Request;
 
@@ -56,15 +56,19 @@ class FileProvider implements StoreProviderInterface
 	}
 
 	/**
-	 * @param Event $event
+	 * @param EntityInterface $event
 	 * @return void
 	 */
-	public function push(Event $event): void
+	public function push(EntityInterface $event): void
 	{
 		$content = '';
 
 		if(is_file($this->getFileName($event->getTraceId()))) {
-			$content = file_get_contents($this->getFileName($event->getTraceId()));
+			$content = file_get_contents(
+				$this->getFileName(
+					$event->getTraceId()
+				)
+			);
 		}
 
 		file_put_contents(

@@ -7,6 +7,7 @@ use Streamly\Input\Options;
 use Streamly\Input\Dsn;
 use Streamly\Input\Http;
 use Streamly\Input\Server;
+use Streamly\Enum\CaptureType;
 use Streamly\Enum\Level;
 use Streamly\Streamly;
 
@@ -90,6 +91,9 @@ class Event implements EntityInterface
 		Server $server
 	)
 	{
+		// Increase trace unique ID
+		Streamly::increaseTraceUniqueId();
+
 		$now = new \DateTime();
 
 		$this->traceId = Streamly::traceId();
@@ -388,6 +392,7 @@ class Event implements EntityInterface
 	public function toArray(): array
 	{
 		return [
+			'eventType' => 'event',
 			'traceId' => $this->traceId,
 			'traceUniqueId' => $this->traceUniqueId,
 			'sessionId' => $this->sessionId,
@@ -448,5 +453,55 @@ class Event implements EntityInterface
 		});
 
 		return json_encode($data);
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getValidationError(): ?string
+	{
+		// Invalid record type
+		if(in_array($this->getType(), CaptureType::all(), true) === false) {
+			return sprintf('%s is a invalid type', $this->getType());
+		}
+
+		// Level
+		if(in_array($this->getLevel(), Level::all(), true) === false) {
+			return sprintf('%s is a invalid level', $this->getLevel());
+		}
+
+		// Params structure
+		if(empty($this->getParams()) === false) {
+			foreach($this->getParams() as $param) {
+				if(
+					is_string($param['value']) === false &&
+					is_int($param['value']) === false &&
+					is_float($param['value']) === false
+				) {
+					return sprintf('Param %s have wrong value (only: STRING, INT, FLOAT type)', $param['name']);
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAllowedRequest(): bool
+	{
+		if(
+			strpos($this->getRequestUri(), '/favicon.') !== false ||
+			strpos($this->getRequestUri(), 'apple-touch-icon.png') !== false ||
+			strpos($this->getRequestUri(), 'apple-touch-icon-precomposed.png') !== false ||
+			strpos($this->getRequestUri(), 'sitemap.txt') !== false ||
+			strpos($this->getRequestUri(), 'sitemap.xml') !== false ||
+			strpos($this->getRequestUri(), 'robots.txt') !== false
+		) {
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -10,6 +10,7 @@ use Streamly\Request\Response;
 use Streamly\Request\Handler;
 use Streamly\Exceptions\NotInitializedException;
 use Streamly\CodeSource;
+use Streamly\Entity\Breadcrumb;
 
 class Capture
 {
@@ -24,7 +25,7 @@ class Capture
 	public static function Error(\Exception $exception, array $params = [], string $level = Level::NORMAL): void
 	{
 		if(Streamly::isInitialize() === false) {
-			\Streamly\Logs\Log('Streamly is not initialized');
+			\Streamly\Log('Streamly is not initialized');
 
 			throw new NotInitializedException();
 		}
@@ -85,7 +86,7 @@ class Capture
 	public static function Message(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): void
 	{
 		if(Streamly::isInitialize() === false) {
-			\Streamly\Logs\Log('Streamly is not initialized');
+			\Streamly\Log('Streamly is not initialized');
 
 			throw new NotInitializedException();
 		}
@@ -120,7 +121,7 @@ class Capture
 	public static function Activity(string $recordId, ?string $channel = null, array $params = []): void
 	{
 		if(Streamly::isInitialize() === false) {
-			\Streamly\Logs\Log('Streamly is not initialized');
+			\Streamly\Log('Streamly is not initialized');
 
 			throw new NotInitializedException();
 		}
@@ -144,5 +145,31 @@ class Capture
 
 		// Push
 		Handler::Handle($event);
+	}
+
+	/**
+	 * @param string $type
+	 * @param string $message
+	 * @param array $params
+	 * @return void
+	 */
+	public static function Breadcrumb(string $type, string $message, array $params = []): void
+	{
+		if(Streamly::isInitialize() === false) {
+			\Streamly\Log('Streamly is not initialized');
+
+			throw new NotInitializedException();
+		}
+
+		$breadcrumb = new Breadcrumb(
+			Streamly::traceId(),
+			Streamly::traceUniqueId(),
+			$type,
+			$message,
+			$params
+		);
+
+		// Push
+		Handler::Handle($breadcrumb);
 	}
 }

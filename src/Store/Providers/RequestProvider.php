@@ -3,7 +3,7 @@
 namespace Streamly\Store\Providers;
 
 use Streamly\Exceptions\StreamlyException;
-use Streamly\Entity\Event;
+use Streamly\Entity\EntityInterface;
 use Streamly\Request\Request;
 use Streamly\Streamly;
 
@@ -18,9 +18,9 @@ class RequestProvider implements StoreProviderInterface
 	}
 
 	/**
-	 * @param Event $event
+	 * @param EntityInterface $event
 	 */
-	public function push(Event $event): void
+	public function push(EntityInterface $event): void
 	{
 		Request::execute($event->toJson());
 	}

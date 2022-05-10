@@ -32,7 +32,10 @@ class Request
 		curl_close($ch);
 
 		// Add to log
-		Logs::Log($input, $result);
+		Logs::Log(
+			'INPUT : ' . $input,
+			'OUTPUT : ' . $result
+		);
 
 		return new Response($result);
 	}

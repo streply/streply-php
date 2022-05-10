@@ -9,6 +9,7 @@ use Streamly\Logs\Logs;
 use Streamly\Streamly;
 use Streamly\Enum\Level;
 use Streamly\Request\Response;
+use Streamly\Entity\Breadcrumb;
 
 /**
  * @param string $dsn
@@ -52,6 +53,17 @@ function Message(string $message, array $params = [], ?string $channel = null, s
 function Activity(string $message, ?string $channel = null, array $params = []): void
 {
 	Capture::Activity($message, $channel, $params);
+}
+
+/**
+ * @param string $type
+ * @param string $message
+ * @param array $params
+ * @return void
+ */
+function Breadcrumb(string $type, string $message, array $params = []): void
+{
+	Capture::Breadcrumb($type, $message, $params);
 }
 
 /**
