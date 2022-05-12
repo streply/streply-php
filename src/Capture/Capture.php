@@ -46,6 +46,15 @@ class Capture
 		}
 
 		// Trace
+		$event->addTrace(
+			$exception->getFile(),
+			$exception->getLine(),
+			null,
+			null,
+			[],
+			CodeSource::load($exception->getFile(), $exception->getLine(), self::SOURCE_LINE_NUMBERS)
+		);
+
 		foreach($exception->getTrace() as $trace) {
 			if(isset($trace['file'], $trace['line'])) {
 				$event->addTrace(
