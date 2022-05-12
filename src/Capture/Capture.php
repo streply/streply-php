@@ -14,7 +14,7 @@ use Streamly\Entity\Breadcrumb;
 
 class Capture
 {
-	private const SOURCE_LINE_NUMBERS = 30;
+	private const SOURCE_LINE_NUMBERS = 10;
 
 	/**
 	 * @param \Exception $exception
