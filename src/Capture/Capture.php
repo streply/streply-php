@@ -17,12 +17,12 @@ class Capture
 	private const SOURCE_LINE_NUMBERS = 10;
 
 	/**
-	 * @param \Exception $exception
+	 * @param \Throwable $exception
 	 * @param array $params
 	 * @param string $level
 	 * @return void
 	 */
-	public static function Error(\Exception $exception, array $params = [], string $level = Level::NORMAL): void
+	public static function Error(\Throwable $exception, array $params = [], string $level = Level::NORMAL): void
 	{
 		if(Streamly::isInitialize() === false) {
 			\Streamly\Log('Streamly is not initialized');

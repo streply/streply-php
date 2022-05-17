@@ -22,12 +22,12 @@ function Initialize(string $dsn, array $options = [])
 }
 
 /**
- * @param \Exception $exception
+ * @param \Throwable $exception
  * @param array $params
  * @param string $level
  * @return void
  */
-function Exception(\Exception $exception, array $params = [], string $level = Level::NORMAL): void
+function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): void
 {
 	Capture::Error($exception, $params, $level);
 }
