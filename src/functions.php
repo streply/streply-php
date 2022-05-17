@@ -12,6 +12,25 @@ use Streamly\Request\Response;
 use Streamly\Entity\Breadcrumb;
 
 /**
+ * @return void
+ */
+function ErrorHandler()
+{
+	$lastError = error_get_last();
+
+	if(is_array($lastError)) {
+		Exception(new Exceptions\UnhandledException(
+			$lastError['message'],
+			$lastError['line'],
+			$lastError['file'],
+		));
+	}
+}
+
+register_shutdown_function('Streamly\ErrorHandler');
+set_error_handler("Streamly\ErrorHandler");
+
+/**
  * @param string $dsn
  * @param array $options
  * @return void
