@@ -68,19 +68,6 @@ class Capture
 			}
 		}
 
-		// Debug back trace
-		foreach(debug_backtrace() as $debugBackTrace) {
-			$event->addDebugBackTrace(
-				$debugBackTrace['file'],
-				$debugBackTrace['line'],
-				$debugBackTrace['function'] ?? null,
-				$debugBackTrace['class'] ?? null,
-				$debugBackTrace['type'] ?? null,
-				$debugBackTrace['args'] ?? [],
-				CodeSource::load($debugBackTrace['file'], $debugBackTrace['line'], self::SOURCE_LINE_NUMBERS)
-			);
-		}
-
 		// Push
 		Handler::Handle($event);
 	}
@@ -104,19 +91,6 @@ class Capture
 		$event = Event::create(CaptureType::TYPE_MESSAGE, $message, $params, $level);
 		$event->setChannel($channel);
 
-		// Debug back trace
-		foreach(debug_backtrace() as $debugBackTrace) {
-			$event->addDebugBackTrace(
-				$debugBackTrace['file'],
-				$debugBackTrace['line'],
-				$debugBackTrace['function'] ?? null,
-				$debugBackTrace['class'] ?? null,
-				$debugBackTrace['type'] ?? null,
-				$debugBackTrace['args'] ?? [],
-				CodeSource::load($debugBackTrace['file'], $debugBackTrace['line'], self::SOURCE_LINE_NUMBERS)
-			);
-		}
-
 		// Push
 		Handler::Handle($event);
 	}
@@ -138,19 +112,6 @@ class Capture
 		// Create record
 		$event = Event::create(CaptureType::TYPE_ACTIVITY, $message, $params);
 		$event->setChannel($channel);
-
-		// Debug back trace
-		foreach(debug_backtrace() as $debugBackTrace) {
-			$event->addDebugBackTrace(
-				$debugBackTrace['file'],
-				$debugBackTrace['line'],
-				$debugBackTrace['function'] ?? null,
-				$debugBackTrace['class'] ?? null,
-				$debugBackTrace['type'] ?? null,
-				$debugBackTrace['args'] ?? [],
-				CodeSource::load($debugBackTrace['file'], $debugBackTrace['line'], self::SOURCE_LINE_NUMBERS)
-			);
-		}
 
 		// Push
 		Handler::Handle($event);

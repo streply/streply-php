@@ -59,8 +59,6 @@ class Event implements EntityInterface
 	private ?string $parentExceptionName = null;
 	private ?string $parentExceptionFileName = null;
 
-	private array $debugBackTrace = [];
-
 	/**
 	 * @param string $type
 	 * @param string $message
@@ -364,29 +362,6 @@ class Event implements EntityInterface
 	}
 
 	/**
-	 * @param string $file
-	 * @param int $line
-	 * @param string|null $function
-	 * @param string|null $class
-	 * @param string|null $type
-	 * @param array $args
-	 * @param array $source
-	 * @return void
-	 */
-	public function addDebugBackTrace(string $file, int $line, ?string $function, ?string $class, ?string $type, array $args = [], array $source = []): void
-	{
-		$this->debugBackTrace[] = [
-			'file' => $file,
-			'line' => $line,
-			'function' => $function,
-			'class' => $class,
-			'type' => $type,
-			'args' => $args,
-			'source' => $source,
-		];
-	}
-
-	/**
 	 * @return array
 	 */
 	public function toArray(): array
@@ -434,7 +409,6 @@ class Event implements EntityInterface
 			'exceptionFileName' => $this->exceptionFileName,
 			'parentExceptionName' => $this->parentExceptionName,
 			'parentExceptionFileName' => $this->parentExceptionFileName,
-			'debugBackTrace' => $this->debugBackTrace,
 		];
 	}
 
