@@ -35,6 +35,15 @@ class Capture
 		$event->setFile($exception->getFile());
 		$event->setLine($exception->getLine());
 
+		// Custom HTTP status code
+		if(method_exists($exception, 'getStatusCode')) {
+			$exceptionStatusCode = $exception->getStatusCode();
+
+			if(is_int($exceptionStatusCode)) {
+				$event->setHttpStatusCode($exceptionStatusCode);
+			}
+		}
+
 		$reflectionClass = new \ReflectionClass($exception);
 
 		$event->setExceptionName($reflectionClass->getName());

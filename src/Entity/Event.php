@@ -341,6 +341,14 @@ class Event implements EntityInterface
 	}
 
 	/**
+	 * @param int|null $httpStatusCode
+	 */
+	public function setHttpStatusCode(?int $httpStatusCode): void
+	{
+		$this->httpStatusCode = $httpStatusCode;
+	}
+
+	/**
 	 * @param string $file
 	 * @param int $line
 	 * @param string|null $function
