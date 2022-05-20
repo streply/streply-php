@@ -135,6 +135,39 @@ class Http
 	}
 
 	/**
+	 * @return string|null
+	 */
+	public function getContentType(): ?string
+	{
+		return $this->get('CONTENT_TYPE');
+	}
+
+	/**
+	 * @return array|null
+	 */
+	public function getRequestParams(): ?array
+	{
+		$requestParams = @json_decode(file_get_contents('php://input'), true);
+
+		// Raw body
+		if(is_array($requestParams) && empty($requestParams) === false) {
+			return $requestParams;
+		}
+
+		// POST
+		if($this->getMethod() === 'POST' && is_array($_POST)) {
+			return $_POST;
+		}
+
+		// GET
+		if($this->getMethod() === 'GET' && is_array($_GET)) {
+			return $_GET;
+		}
+
+		return null;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getUrl(): string
