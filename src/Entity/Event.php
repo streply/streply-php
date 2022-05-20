@@ -49,6 +49,7 @@ class Event implements EntityInterface
 	private \DateTimeZone $dateTimeZone;
 	private ?string $requestContentType;
 	private ?array $requestParams;
+	private array $requestHeaders;
 
 	private ?float $serverCpuLoad;
 	private ?float $serverDiskFreeSpace;
@@ -121,6 +122,7 @@ class Event implements EntityInterface
 		$this->requestTimeFloat = $http->getTimeFloat();
 		$this->requestContentType = $http->getContentType();
 		$this->requestParams = $http->getRequestParams();
+		$this->requestHeaders = $http->getHeaders();
 		$this->requestIp = $http->getIp();
 		$this->httpStatusCode = $http->getStatusCode();
 		$this->url = $http->getUrl();
@@ -412,6 +414,7 @@ class Event implements EntityInterface
 			'requestTimeFloat' => $this->requestTimeFloat,
 			'requestContentType' => $this->requestContentType,
 			'requestParams' => $this->requestParams,
+			'requestHeaders' => $this->requestHeaders,
 			'requestIp' => $this->requestIp,
 			'dateTimeZone' => $this->dateTimeZone->getName(),
 			'serverCpuLoad' => $this->serverCpuLoad,

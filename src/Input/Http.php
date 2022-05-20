@@ -143,6 +143,14 @@ class Http
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getHeaders(): array
+	{
+		return getallheaders();
+	}
+
+	/**
 	 * @return array|null
 	 */
 	public function getRequestParams(): ?array
