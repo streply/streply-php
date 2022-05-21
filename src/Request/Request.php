@@ -23,7 +23,9 @@ class Request
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_HTTPHEADER,
 			[
-				'Content-Type:application/json',
+				sprintf('Token: %s', Streamly::getDsn()->getPublicKey()),
+				sprintf('ProjectId: %s', Streamly::getDsn()->getProjectId()),
+				'Content-Type: application/json',
 				'Content-Length: ' . strlen($input)
 			]
 		);
