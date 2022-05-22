@@ -17,6 +17,11 @@ class Streamly
 	/**
 	 *
 	 */
+	public const API_VERSION = '0.0.9';
+
+	/**
+	 *
+	 */
 	private const UNIQUE_TRACE_ID_FORMAT = '%s_%d';
 
 	/**
@@ -65,6 +70,11 @@ class Streamly
 	private static string $userId;
 
 	/**
+	 * @var float
+	 */
+	public static float $startTime;
+
+	/**
 	 *
 	 */
 	protected function __construct() { }
@@ -94,6 +104,7 @@ class Streamly
 		self::$sessionId = Session::sessionId();
 		self::$userId = Session::userId();
 		self::$traceUniqueId = 0;
+		self::$startTime = Time::loadTime();
 
 		self::getInstance();
 
@@ -104,11 +115,6 @@ class Streamly
 				$dsn
 			)
 		);
-
-		// Event
-		if(self::getOptions()->get('initializeRequest', true) === true) {
-			Activity('streamly.initialize');
-		}
 	}
 
 	/**
@@ -197,9 +203,7 @@ class Streamly
 	public static function Close(): void
 	{
 		// Event
-		if(self::getOptions()->get('initializeRequest', true) === true) {
-			Activity('streamly.close');
-		}
+		Activity('streamly.request');
 
 		// Close
 		$store = new Store(Streamly::$options->get('storeProvider'));

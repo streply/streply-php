@@ -9,6 +9,7 @@ use Streamly\Input\Http;
 use Streamly\Input\Server;
 use Streamly\Enum\CaptureType;
 use Streamly\Enum\Level;
+use Streamly\Time;
 use Streamly\Streamly;
 
 class Event implements EntityInterface
@@ -61,6 +62,9 @@ class Event implements EntityInterface
 	private ?string $exceptionFileName = null;
 	private ?string $parentExceptionName = null;
 	private ?string $parentExceptionFileName = null;
+	private float $loadTime;
+	private float $startTime;
+	private string $apiClientVersion;
 
 	/**
 	 * @param string $type
@@ -104,7 +108,9 @@ class Event implements EntityInterface
 		$this->status = 0;
 		$this->level = \Streamly\Enum\Level::NORMAL;
 		$this->date = $now;
-		$this->time = microtime(true);
+		$this->startTime = Streamly::$startTime;
+		$this->time = Time::loadTime();
+		$this->loadTime = Time::loadTime() - Streamly::$startTime;
 		$this->technology = 'php';
 		$this->technologyVersion = PHP_VERSION;
 		$this->params = [];
@@ -131,6 +137,7 @@ class Event implements EntityInterface
 		$this->serverDiskTotalSpace = $server->getDiskTotalSpace();
 		$this->serverMemoryUsage = $server->getMemoryUsage();
 		$this->serverMemoryPeakUsage = $server->getMemoryPeakUsage();
+		$this->apiClientVersion = Streamly::API_VERSION;
 	}
 
 	/**
@@ -355,6 +362,15 @@ class Event implements EntityInterface
 	}
 
 	/**
+	 * @param float $loadTime
+	 * @return void
+	 */
+	public function setLoadTime(float $loadTime): void
+	{
+		$this->loadTime = $loadTime;
+	}
+
+	/**
 	 * @param string $file
 	 * @param int $line
 	 * @param string|null $function
@@ -392,7 +408,9 @@ class Event implements EntityInterface
 			'message' => $this->message,
 			'level' => $this->level,
 			'date' => $this->date->format('Y-m-d H:i:s'),
+			'startTime' => $this->startTime,
 			'time' => $this->time,
+			'loadTime' => $this->loadTime,
 			'params' => $this->params,
 			'trace' => $this->trace,
 			'release' => $this->release,
@@ -426,6 +444,7 @@ class Event implements EntityInterface
 			'exceptionFileName' => $this->exceptionFileName,
 			'parentExceptionName' => $this->parentExceptionName,
 			'parentExceptionFileName' => $this->parentExceptionFileName,
+			'apiClientVersion' => $this->apiClientVersion,
 		];
 	}
 

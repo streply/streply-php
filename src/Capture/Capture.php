@@ -10,6 +10,7 @@ use Streamly\Request\Response;
 use Streamly\Request\Handler;
 use Streamly\Exceptions\NotInitializedException;
 use Streamly\CodeSource;
+use Streamly\Time;
 use Streamly\Entity\Breadcrumb;
 
 class Capture
