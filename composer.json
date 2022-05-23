@@ -1,5 +1,5 @@
 {
-  "name": "streamly/streamly",
+  "name": "streamly/streamly-php",
   "type": "library",
   "description": "A thestreamly.com PHP SDK",
   "homepage": "https://thestreamly",
