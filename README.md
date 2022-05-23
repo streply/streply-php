@@ -62,7 +62,7 @@ Available providers:
 use Streamly\Entity\Event;
 
 Streamly\Initialize(
-    'http://clientPublicKey@api.streamly.local:8888/123',
+    'https://clientPublicKey@api.thestreamly.com/1',
     [
         'filterBeforeSend' => function(Event $event): bool {
             if($event->getMessage() === 'someMessage') {
