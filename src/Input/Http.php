@@ -40,11 +40,23 @@ class Http
 	}
 
 	/**
-	 * @return string|null
+	 * @return string
 	 */
-	public function getUserAgent(): ?string
+	public function getUserAgent(): string
 	{
-		return $this->get('HTTP_USER_AGENT');
+		$userAgent = $this->get('HTTP_USER_AGENT');
+
+		if($userAgent !== null) {
+			return $userAgent;
+		}
+
+		$phpSelf = $this->get('PHP_SELF');
+
+		if($phpSelf !== null) {
+			return $phpSelf;
+		}
+
+		return '';
 	}
 
 	/**
