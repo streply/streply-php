@@ -188,10 +188,14 @@ class Http
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getUrl(): string
+	public function getUrl(): ?string
 	{
+		if(isset($_SERVER['HTTP_HOST']) === false) {
+			return null;
+		}
+
 		return sprintf(
 			'%s://%s/%s',
 			isset($_SERVER['HTTPS']) ? 'https' : 'http',
