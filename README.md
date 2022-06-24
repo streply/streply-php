@@ -12,13 +12,13 @@ Fast initialization:
 ```php
 <?php
 
-Streamly\Initialize('https://clientPublicKey@api.thestreamly.com/1');
+Streamly\Initialize('https://clientPublicKey@api.thestreamly.com/projectId');
 ```
 
 Where:
 
 - `clientPublicKey` your public API key
-- `1` your project ID
+- `projectId` your project ID
 
 Initialization with parameters:
 
@@ -26,7 +26,7 @@ Initialization with parameters:
 <?php
 
 Streamly\Initialize(
-    'https://clientPublicKey@api.thestreamly.com/1',
+    'https://clientPublicKey@api.thestreamly.com/projectId',
     [
         'release' => 'my-project-name@2.3.12',
         'environment' => 'production',
@@ -40,7 +40,7 @@ Streamly\Initialize(
 <?php
 
 Streamly\Initialize(
-    'https://clientPublicKey@api.thestreamly.com/1',
+    'https://clientPublicKey@api.thestreamly.com/projectId',
     [
         'storeProvider' => new Streamly\Store\Providers\FileProvider(
             __DIR__ . '/store'
@@ -62,7 +62,7 @@ Available providers:
 use Streamly\Entity\Event;
 
 Streamly\Initialize(
-    'https://clientPublicKey@api.thestreamly.com/1',
+    'https://clientPublicKey@api.thestreamly.com/projectId',
     [
         'filterBeforeSend' => function(Event $event): bool {
             if($event->getMessage() === 'someMessage') {
@@ -96,9 +96,13 @@ try {
 ```php
 <?php
 
-Streamly\Activity('message', 'channel', [
-    'userId' => 1
-]);
+Streamly\Activity(
+    'message', 
+    [
+        'paramName' => 'paramValue'
+    ],
+    '#optionalChannel' 
+);
 ```
 
 ### Messages
@@ -107,11 +111,11 @@ Streamly\Activity('message', 'channel', [
 <?php
 
 Streamly\Message(
-    'testMessage',
+    'message',
     [
-        'userId' => 133423
+        'paramName' => 'paramValue'
     ],
-    'users',
+    '#optionalChannel',
     Streamly\Enum\Level::CRITICAL
 );
 ```
