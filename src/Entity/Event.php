@@ -346,9 +346,9 @@ class Event implements EntityInterface
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getRequestUri(): string
+	public function getRequestUri(): ?string
 	{
 		return $this->requestUri;
 	}
