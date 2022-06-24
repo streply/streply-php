@@ -39,14 +39,14 @@ class Event implements EntityInterface
 	private string $technologyVersion;
 
 	private string $requestUserAgent;
-	private string $requestServer;
-	private int $requestPort;
-	private string $requestScheme;
-	private string $requestMethod;
-	private string $requestUri;
+	private ?string $requestServer;
+	private ?int $requestPort;
+	private ?string $requestScheme;
+	private ?string $requestMethod;
+	private ?string $requestUri;
 	private ?int $requestTime;
 	private ?float $requestTimeFloat;
-	private string $requestIp;
+	private ?string $requestIp;
 	private \DateTimeZone $dateTimeZone;
 	private ?string $requestContentType;
 	private ?array $requestParams;
