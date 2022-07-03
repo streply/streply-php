@@ -203,7 +203,9 @@ class Streamly
 	public static function Close(): void
 	{
 		// Event
-		Activity('streamly.request');
+		if(self::getOptions()->get('internalRequests', true) === true) {
+			Activity('streamly.request');
+		}
 
 		// Close
 		$store = new Store(Streamly::$options->get('storeProvider'));
