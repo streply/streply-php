@@ -22,6 +22,8 @@ class Capture
 	 * @param array $params
 	 * @param string $level
 	 * @return void
+	 * @throws NotInitializedException
+	 * @throws \Streamly\Exceptions\StreamlyException
 	 */
 	public static function Error(\Throwable $exception, array $params = [], string $level = Level::NORMAL): void
 	{
@@ -86,30 +88,9 @@ class Capture
 	 * @param string $message
 	 * @param array $params
 	 * @param string|null $channel
-	 * @param string $level
 	 * @return void
-	 */
-	public static function Message(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): void
-	{
-		if(Streamly::isInitialize() === false) {
-			\Streamly\Log('Streamly is not initialized');
-
-			throw new NotInitializedException();
-		}
-
-		// Create record
-		$event = Event::create(CaptureType::TYPE_MESSAGE, $message, $params, $level);
-		$event->setChannel($channel);
-
-		// Push
-		Handler::Handle($event);
-	}
-
-	/**
-	 * @param string $message
-	 * @param array $params
-	 * @param string|null $channel
-	 * @return void
+	 * @throws NotInitializedException
+	 * @throws \Streamly\Exceptions\StreamlyException
 	 */
 	public static function Activity(string $message, array $params = [], ?string $channel = null): void
 	{
@@ -132,6 +113,9 @@ class Capture
 	 * @param string $message
 	 * @param array $params
 	 * @return void
+	 * @throws NotInitializedException
+	 * @throws \Streamly\Exceptions\InvalidBreadcrumbTypeException
+	 * @throws \Streamly\Exceptions\StreamlyException
 	 */
 	public static function Breadcrumb(string $type, string $message, array $params = []): void
 	{

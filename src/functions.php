@@ -34,6 +34,7 @@ set_error_handler("Streamly\ErrorHandler");
  * @param string $dsn
  * @param array $options
  * @return void
+ * @throws Exceptions\InvalidDsnException
  */
 function Initialize(string $dsn, array $options = [])
 {
@@ -45,6 +46,7 @@ function Initialize(string $dsn, array $options = [])
  * @param array $params
  * @param string $level
  * @return void
+ * @throws Exceptions\NotInitializedException
  */
 function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): void
 {
@@ -55,19 +57,8 @@ function Exception(\Throwable $exception, array $params = [], string $level = Le
  * @param string $message
  * @param array $params
  * @param string|null $channel
- * @param string $level
  * @return void
- */
-function Message(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): void
-{
-	Capture::Message($message, $params, $channel, $level);
-}
-
-/**
- * @param string $message
- * @param array $params
- * @param string|null $channel
- * @return void
+ * @throws Exceptions\NotInitializedException
  */
 function Activity(string $message, array $params = [], ?string $channel = null): void
 {
@@ -79,6 +70,7 @@ function Activity(string $message, array $params = [], ?string $channel = null):
  * @param string $message
  * @param array $params
  * @return void
+ * @throws Exceptions\NotInitializedException
  */
 function Breadcrumb(string $type, string $message, array $params = []): void
 {
@@ -86,8 +78,6 @@ function Breadcrumb(string $type, string $message, array $params = []): void
 }
 
 /**
- * Function helper
- *
  * @param string $message
  * @return void
  */
