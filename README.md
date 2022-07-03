@@ -3,16 +3,21 @@
 ## Install
 
 ```
-composer require streamly/streamly
+composer require streamly/streamly-php
 ```
 ## Initialization
 
-Fast initialization:
+Initialize Streamly on beginning your code and close the connection after your code.<br>
+Both functions are mandatory for correctly working.
 
 ```php
 <?php
 
 Streamly\Initialize('https://clientPublicKey@api.thestreamly.com/projectId');
+
+// Your code here
+
+Streamly\Close();
 ```
 
 Where:
@@ -20,7 +25,7 @@ Where:
 - `clientPublicKey` your public API key
 - `projectId` your project ID
 
-Initialization with parameters:
+Initialization with parameters
 
 ```php
 <?php
@@ -34,7 +39,7 @@ Streamly\Initialize(
 );
 ```
 
-### Change provider
+### Change store provider
 
 ```php
 <?php
@@ -75,6 +80,21 @@ Streamly\Initialize(
 );
 ```
 
+### Turn off Streamly internal requests
+
+```php
+<?php
+
+use Streamly\Entity\Event;
+
+Streamly\Initialize(
+    'https://clientPublicKey@api.thestreamly.com/projectId',
+    [
+        'internalRequests' => false
+    ]
+);
+```
+
 ## Capture
 
 ### Exception
@@ -84,10 +104,30 @@ Streamly\Initialize(
 
 try {
     if(true) {
-        throw new \Exceptions\SomeException('Invalid some action');
+        throw new \Exceptions\SomeException('Exception message here');
     }
 } catch(\Exceptions\ParentException $exception) {
     Streamly\Exception($exception);
+}
+```
+
+### Exception with params and capture level
+
+```php
+<?php
+
+try {
+    if(true) {
+        throw new \Exceptions\SomeException('Exception message here');
+    }
+} catch(\Exceptions\ParentException $exception) {
+    Streamly\Exception(
+        $exception,
+        [
+            'paramName' => 'paramValue'
+        ],
+        Level::CRITICAL
+    );
 }
 ```
 
@@ -102,21 +142,6 @@ Streamly\Activity(
         'paramName' => 'paramValue'
     ],
     '#optionalChannel' 
-);
-```
-
-### Messages
-
-```php
-<?php
-
-Streamly\Message(
-    'message',
-    [
-        'paramName' => 'paramValue'
-    ],
-    '#optionalChannel',
-    Streamly\Enum\Level::CRITICAL
 );
 ```
 
