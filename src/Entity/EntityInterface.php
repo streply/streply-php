@@ -1,6 +1,6 @@
 <?php
 
-namespace Streamly\Entity;
+namespace Streply\Entity;
 
 interface EntityInterface
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Streamly\Store\Providers;
+namespace Streply\Store\Providers;
 
-use Streamly\Exceptions\StreamlyException;
-use Streamly\Entity\EntityInterface;
-use Streamly\Store\Providers\RequestProvider;
-use Streamly\Request\Request;
+use Streply\Exceptions\StreplyException;
+use Streply\Entity\EntityInterface;
+use Streply\Store\Providers\RequestProvider;
+use Streply\Request\Request;
 
 class FileProvider implements StoreProviderInterface
 {
@@ -26,7 +26,7 @@ class FileProvider implements StoreProviderInterface
 		}
 
 		if(is_dir($this->path) === false) {
-			throw new StreamlyException(
+			throw new StreplyException(
 				sprintf(
 					'%s is not a valid folder',$this->path
 				)

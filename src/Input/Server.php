@@ -1,6 +1,6 @@
 <?php
 
-namespace Streamly\Input;
+namespace Streply\Input;
 
 class Server
 {

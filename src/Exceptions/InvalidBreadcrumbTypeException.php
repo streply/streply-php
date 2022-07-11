@@ -1,8 +1,8 @@
 <?php
 
-namespace Streamly\Exceptions;
+namespace Streply\Exceptions;
 
-class InvalidBreadcrumbTypeException extends StreamlyException
+class InvalidBreadcrumbTypeException extends StreplyException
 {
 
 }

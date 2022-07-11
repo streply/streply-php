@@ -1,6 +1,6 @@
 <?php
 
-namespace Streamly\Exceptions;
+namespace Streply\Exceptions;
 
 class UnhandledException extends \Exception
 {

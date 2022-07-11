@@ -1,12 +1,12 @@
 <?php
 
-namespace Streamly\Store;
+namespace Streply\Store;
 
-use Streamly\Store\Providers\StoreProviderInterface;
-use Streamly\Entity\Event;
-use Streamly\Entity\EntityInterface;
-use Streamly\Exceptions\InvalidRequestException;
-use Streamly\Streamly;
+use Streply\Store\Providers\StoreProviderInterface;
+use Streply\Entity\Event;
+use Streply\Entity\EntityInterface;
+use Streply\Exceptions\InvalidRequestException;
+use Streply\Streply;
 
 class Store
 {
@@ -37,8 +37,8 @@ class Store
 		}
 
 		// Filter before send
-		if(Streamly::getOptions()->has('filterBeforeSend') && $event instanceof Event) {
-			$filterBeforeSend = Streamly::getOptions()->get('filterBeforeSend');
+		if(Streply::getOptions()->has('filterBeforeSend') && $event instanceof Event) {
+			$filterBeforeSend = Streply::getOptions()->get('filterBeforeSend');
 
 			if(is_callable($filterBeforeSend)) {
 				$filterBeforeSendOutput = $filterBeforeSend($event);

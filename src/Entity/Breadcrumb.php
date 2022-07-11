@@ -1,9 +1,9 @@
 <?php
 
-namespace Streamly\Entity;
+namespace Streply\Entity;
 
-use Streamly\Enum\BreadcrumbType;
-use Streamly\Exceptions\InvalidBreadcrumbTypeException;
+use Streply\Enum\BreadcrumbType;
+use Streply\Exceptions\InvalidBreadcrumbTypeException;
 
 class Breadcrumb implements EntityInterface
 {

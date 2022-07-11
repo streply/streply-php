@@ -1,6 +1,6 @@
 <?php
 
-namespace Streamly\Enum;
+namespace Streply\Enum;
 
 class Level
 {

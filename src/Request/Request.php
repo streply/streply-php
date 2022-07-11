@@ -1,9 +1,9 @@
 <?php
 
-namespace Streamly\Request;
+namespace Streply\Request;
 
-use Streamly\Streamly;
-use Streamly\Logs\Logs;
+use Streply\Streply;
+use Streply\Logs\Logs;
 
 class Request
 {
@@ -13,7 +13,7 @@ class Request
 	 */
 	public static function execute(string $input): Response
 	{
-		$url = Streamly::getDsn()->getApiUrl();
+		$url = Streply::getDsn()->getApiUrl();
 		$ch = curl_init($url);
 
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -23,8 +23,8 @@ class Request
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_HTTPHEADER,
 			[
-				sprintf('Token: %s', Streamly::getDsn()->getPublicKey()),
-				sprintf('ProjectId: %s', Streamly::getDsn()->getProjectId()),
+				sprintf('Token: %s', Streply::getDsn()->getPublicKey()),
+				sprintf('ProjectId: %s', Streply::getDsn()->getProjectId()),
 				'Content-Type: application/json',
 				'Content-Length: ' . strlen($input)
 			]

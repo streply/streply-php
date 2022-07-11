@@ -1,23 +1,23 @@
 <?php
 
-namespace Streamly;
+namespace Streply;
 
-use Streamly\Input\Dsn;
-use Streamly\Input\Options;
-use Streamly\Input\Http;
-use Streamly\Input\Server;
-use Streamly\Session;
-use Streamly\Store\Store;
-use Streamly\Store\Providers\RequestProvider;
-use Streamly\Store\Providers\StoreProviderInterface;
-use Streamly\Entity\Event;
+use Streply\Input\Dsn;
+use Streply\Input\Options;
+use Streply\Input\Http;
+use Streply\Input\Server;
+use Streply\Session;
+use Streply\Store\Store;
+use Streply\Store\Providers\RequestProvider;
+use Streply\Store\Providers\StoreProviderInterface;
+use Streply\Entity\Event;
 
-class Streamly
+class Streply
 {
 	/**
 	 *
 	 */
-	public const API_VERSION = '0.0.16';
+	public const API_VERSION = '0.0.17';
 
 	/**
 	 *
@@ -25,7 +25,7 @@ class Streamly
 	private const UNIQUE_TRACE_ID_FORMAT = '%s_%d';
 
 	/**
-	 * @var Streamly|null
+	 * @var Streply|null
 	 */
 	private static ?self $instance = null;
 
@@ -109,7 +109,7 @@ class Streamly
 		self::getInstance();
 
 		// Log
-		\Streamly\Log(
+		\Streply\Log(
 			sprintf(
 				'Initialize for %s',
 				$dsn
@@ -208,17 +208,17 @@ class Streamly
 		}
 
 		// Close
-		$store = new Store(Streamly::$options->get('storeProvider'));
-		$store->close(Streamly::traceId());
+		$store = new Store(Streply::$options->get('storeProvider'));
+		$store->close(Streply::traceId());
 
 		// Log
-		\Streamly\Log('Close');
+		\Streply\Log('Close');
 	}
 
 	/**
-	 * @return Streamly
+	 * @return Streply
 	 */
-	public static function getInstance(): Streamly
+	public static function getInstance(): Streply
 	{
 		if (self::$instance === null) {
 			self::$instance = new static();

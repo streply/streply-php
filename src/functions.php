@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Streamly;
+namespace Streply;
 
-use Streamly\Capture\Capture;
-use Streamly\Logs\Logs;
-use Streamly\Streamly;
-use Streamly\Enum\Level;
-use Streamly\Request\Response;
-use Streamly\Entity\Breadcrumb;
+use Streply\Capture\Capture;
+use Streply\Logs\Logs;
+use Streply\Streply;
+use Streply\Enum\Level;
+use Streply\Request\Response;
+use Streply\Entity\Breadcrumb;
 
 /**
  * @return void
@@ -27,8 +27,8 @@ function ErrorHandler()
 	}
 }
 
-register_shutdown_function('Streamly\ErrorHandler');
-set_error_handler("Streamly\ErrorHandler");
+register_shutdown_function('Streply\ErrorHandler');
+set_error_handler("Streply\ErrorHandler");
 
 /**
  * @param string $dsn
@@ -38,7 +38,7 @@ set_error_handler("Streamly\ErrorHandler");
  */
 function Initialize(string $dsn, array $options = [])
 {
-	Streamly::Initialize($dsn, $options);
+	Streply::Initialize($dsn, $options);
 }
 
 /**
@@ -99,5 +99,5 @@ function Logs(): array
  */
 function Close(): void
 {
-	Streamly::Close();
+	Streply::Close();
 }

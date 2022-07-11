@@ -1,8 +1,8 @@
 <?php
 
-namespace Streamly\Exceptions;
+namespace Streply\Exceptions;
 
-class InvalidDsnException extends StreamlyException
+class InvalidDsnException extends StreplyException
 {
 
 }

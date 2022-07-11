@@ -1,11 +1,11 @@
 <?php
 
-namespace Streamly\Store\Providers;
+namespace Streply\Store\Providers;
 
-use Streamly\Exceptions\StreamlyException;
-use Streamly\Entity\EntityInterface;
-use Streamly\Request\Request;
-use Streamly\Streamly;
+use Streply\Exceptions\StreplyException;
+use Streply\Entity\EntityInterface;
+use Streply\Request\Request;
+use Streply\Streply;
 
 class RequestProvider implements StoreProviderInterface
 {

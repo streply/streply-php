@@ -1,6 +1,6 @@
 <?php
 
-namespace Streamly\Request;
+namespace Streply\Request;
 
 class Response
 {

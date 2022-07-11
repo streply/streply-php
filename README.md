@@ -1,23 +1,23 @@
-# Streamly PHP SDK
+# Streply PHP SDK
 
 ## Install
 
 ```
-composer require streamly/streamly-php
+composer require streply/streply-php
 ```
 ## Initialization
 
-Initialize Streamly on beginning your code and close the connection after your code.<br>
+Initialize Streply on beginning your code and close the connection after your code.<br>
 Both functions are mandatory for correctly working.
 
 ```php
 <?php
 
-Streamly\Initialize('https://clientPublicKey@api.thestreamly.com/projectId');
+Streply\Initialize('https://clientPublicKey@api.streply.com/projectId');
 
 // Your code here
 
-Streamly\Close();
+Streply\Close();
 ```
 
 Where:
@@ -30,8 +30,8 @@ Initialization with parameters
 ```php
 <?php
 
-Streamly\Initialize(
-    'https://clientPublicKey@api.thestreamly.com/projectId',
+Streply\Initialize(
+    'https://clientPublicKey@api.streply.com/projectId',
     [
         'release' => 'my-project-name@2.3.12',
         'environment' => 'production',
@@ -44,10 +44,10 @@ Streamly\Initialize(
 ```php
 <?php
 
-Streamly\Initialize(
-    'https://clientPublicKey@api.thestreamly.com/projectId',
+Streply\Initialize(
+    'https://clientPublicKey@api.streply.com/projectId',
     [
-        'storeProvider' => new Streamly\Store\Providers\FileProvider(
+        'storeProvider' => new Streply\Store\Providers\FileProvider(
             __DIR__ . '/store'
         )
     ]
@@ -57,17 +57,15 @@ Streamly\Initialize(
 Available providers:
 
 - RequestProvider - Send requests immediately
-- FileProvider - Storage requests in files and sends all requests after calling the function `Streamly\Close();`
+- FileProvider - Storage requests in files and sends all requests after calling the function `Streply\Close();`
 
 ### Filter events before send
 
 ```php
 <?php
 
-use Streamly\Entity\Event;
-
-Streamly\Initialize(
-    'https://clientPublicKey@api.thestreamly.com/projectId',
+Streply\Initialize(
+    'https://clientPublicKey@api.streply.com/projectId',
     [
         'filterBeforeSend' => function(Event $event): bool {
             if($event->getMessage() === 'someMessage') {
@@ -80,15 +78,13 @@ Streamly\Initialize(
 );
 ```
 
-### Turn off Streamly internal requests
+### Turn off Streply internal requests
 
 ```php
 <?php
 
-use Streamly\Entity\Event;
-
-Streamly\Initialize(
-    'https://clientPublicKey@api.thestreamly.com/projectId',
+Streply\Initialize(
+    'https://clientPublicKey@api.streply.com/projectId',
     [
         'internalRequests' => false
     ]
@@ -107,7 +103,7 @@ try {
         throw new \Exceptions\SomeException('Exception message here');
     }
 } catch(\Exceptions\ParentException $exception) {
-    Streamly\Exception($exception);
+    Streply\Exception($exception);
 }
 ```
 
@@ -116,12 +112,14 @@ try {
 ```php
 <?php
 
+use Streply\Enum\Level;
+
 try {
     if(true) {
         throw new \Exceptions\SomeException('Exception message here');
     }
 } catch(\Exceptions\ParentException $exception) {
-    Streamly\Exception(
+    Streply\Exception(
         $exception,
         [
             'paramName' => 'paramValue'
@@ -136,7 +134,7 @@ try {
 ```php
 <?php
 
-Streamly\Activity(
+Streply\Activity(
     'message', 
     [
         'paramName' => 'paramValue'
@@ -157,12 +155,12 @@ Streamly\Activity(
 ```php
 <?php
 
-use Streamly\Enum\BreadcrumbType;
+use Streply\Enum\BreadcrumbType;
 
-Streamly\Activity('someActivity');
+Streply\Activity('someActivity');
 
-Streamly\Breadcrumb(BreadcrumbType::INFO, 'firstBreadcrumb for someActivity');
-Streamly\Breadcrumb(BreadcrumbType::DEBUG, 'secondBreadcrumb for someActivity', [
+Streply\Breadcrumb(BreadcrumbType::INFO, 'firstBreadcrumb for someActivity');
+Streply\Breadcrumb(BreadcrumbType::DEBUG, 'secondBreadcrumb for someActivity', [
     'parameterName' => 'parameterValue'
 ]);
 ```
@@ -174,5 +172,5 @@ Available types: `BreadcrumbType::INFO`, `BreadcrumbType::DEBUG`, `BreadcrumbTyp
 ```php
 <?php
 
-print_r(Streamly\Logs());
+print_r(Streply\Logs());
 ```

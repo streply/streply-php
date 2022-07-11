@@ -1,12 +1,12 @@
 {
-  "name": "streamly/streamly-php",
+  "name": "streply/streply-php",
   "type": "library",
-  "description": "A thestreamly.com PHP SDK",
-  "homepage": "https://thestreamly",
+  "description": "A Streply PHP SDK",
+  "homepage": "https://streply.com",
   "authors": [
     {
       "name": "Michal Molenda",
-      "email": "michal@codeapps.io"
+      "email": "michal@streply.com"
     }
   ],
   "require": {
@@ -17,7 +17,7 @@
       "src/functions.php"
     ],
     "psr-4": {
-      "Streamly\\": "src/"
+      "Streply\\": "src/"
     }
   }
 }

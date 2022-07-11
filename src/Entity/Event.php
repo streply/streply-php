@@ -1,16 +1,16 @@
 <?php
 
-namespace Streamly\Entity;
+namespace Streply\Entity;
 
-use Streamly\Session;
-use Streamly\Input\Options;
-use Streamly\Input\Dsn;
-use Streamly\Input\Http;
-use Streamly\Input\Server;
-use Streamly\Enum\CaptureType;
-use Streamly\Enum\Level;
-use Streamly\Time;
-use Streamly\Streamly;
+use Streply\Session;
+use Streply\Input\Options;
+use Streply\Input\Dsn;
+use Streply\Input\Http;
+use Streply\Input\Server;
+use Streply\Enum\CaptureType;
+use Streply\Enum\Level;
+use Streply\Time;
+use Streply\Streply;
 
 class Event implements EntityInterface
 {
@@ -76,10 +76,10 @@ class Event implements EntityInterface
 	public static function create(string $type, string $message, array $params = [], string $level = Level::NORMAL): Event
 	{
 		$record = new Event(
-			Streamly::getOptions(),
-			Streamly::getDsn(),
-			Streamly::getHttp(),
-			Streamly::getServer()
+			Streply::getOptions(),
+			Streply::getDsn(),
+			Streply::getHttp(),
+			Streply::getServer()
 		);
 		$record->setType($type);
 		$record->setParams($params);
@@ -97,20 +97,20 @@ class Event implements EntityInterface
 	)
 	{
 		// Increase trace unique ID
-		Streamly::increaseTraceUniqueId();
+		Streply::increaseTraceUniqueId();
 
 		$now = new \DateTime();
 
-		$this->traceId = Streamly::traceId();
-		$this->traceUniqueId = Streamly::traceUniqueId();
-		$this->sessionId = Streamly::sessionId();
-		$this->userId = Streamly::userId();
+		$this->traceId = Streply::traceId();
+		$this->traceUniqueId = Streply::traceUniqueId();
+		$this->sessionId = Streply::sessionId();
+		$this->userId = Streply::userId();
 		$this->status = 0;
-		$this->level = \Streamly\Enum\Level::NORMAL;
+		$this->level = \Streply\Enum\Level::NORMAL;
 		$this->date = $now;
-		$this->startTime = Streamly::$startTime;
+		$this->startTime = Streply::$startTime;
 		$this->time = Time::loadTime();
-		$this->loadTime = Time::loadTime() - Streamly::$startTime;
+		$this->loadTime = Time::loadTime() - Streply::$startTime;
 		$this->technology = 'php';
 		$this->technologyVersion = PHP_VERSION;
 		$this->params = [];
@@ -137,7 +137,7 @@ class Event implements EntityInterface
 		$this->serverDiskTotalSpace = $server->getDiskTotalSpace();
 		$this->serverMemoryUsage = $server->getMemoryUsage();
 		$this->serverMemoryPeakUsage = $server->getMemoryPeakUsage();
-		$this->apiClientVersion = Streamly::API_VERSION;
+		$this->apiClientVersion = Streply::API_VERSION;
 	}
 
 	/**

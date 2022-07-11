@@ -1,8 +1,8 @@
 <?php
 
-namespace Streamly\Input;
+namespace Streply\Input;
 
-use Streamly\Exceptions\InvalidDsnException;
+use Streply\Exceptions\InvalidDsnException;
 
 class Dsn
 {

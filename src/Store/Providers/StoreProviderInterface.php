@@ -1,8 +1,8 @@
 <?php
 
-namespace Streamly\Store\Providers;
+namespace Streply\Store\Providers;
 
-use Streamly\Entity\EntityInterface;
+use Streply\Entity\EntityInterface;
 
 interface StoreProviderInterface
 {

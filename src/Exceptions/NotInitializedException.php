@@ -1,8 +1,8 @@
 <?php
 
-namespace Streamly\Exceptions;
+namespace Streply\Exceptions;
 
-class NotInitializedException extends StreamlyException
+class NotInitializedException extends StreplyException
 {
 
 }

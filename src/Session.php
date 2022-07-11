@@ -1,6 +1,6 @@
 <?php
 
-namespace Streamly;
+namespace Streply;
 
 class Session
 {
@@ -17,7 +17,7 @@ class Session
 		return sha1(
 			sprintf(
 				'%s.%s.%d',
-				Streamly::getDsn()->getProjectId(),
+				Streply::getDsn()->getProjectId(),
 				substr(
 					str_shuffle($permittedChars),
 					0,

@@ -1,8 +1,8 @@
 <?php
 
-namespace Streamly\Exceptions;
+namespace Streply\Exceptions;
 
-class InvalidRequestException extends StreamlyException
+class InvalidRequestException extends StreplyException
 {
 
 }

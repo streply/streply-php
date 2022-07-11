@@ -1,12 +1,12 @@
 <?php
 
-namespace Streamly\Request;
+namespace Streply\Request;
 
-use Streamly\Entity\EntityInterface;
-use Streamly\Exceptions\StreamlyException;
-use Streamly\Streamly;
-use Streamly\Store\Store;
-use Streamly\Store\Providers\StoreProviderInterface;
+use Streply\Entity\EntityInterface;
+use Streply\Exceptions\StreplyException;
+use Streply\Streply;
+use Streply\Store\Store;
+use Streply\Store\Providers\StoreProviderInterface;
 
 class Handler
 {
@@ -17,10 +17,10 @@ class Handler
 	public static function Handle(EntityInterface $event): void
 	{
 		if($event->isAllowedRequest()) {
-			$storeProvider = Streamly::getOptions()->get('storeProvider');
+			$storeProvider = Streply::getOptions()->get('storeProvider');
 
 			if(!($storeProvider instanceof StoreProviderInterface)) {
-				throw new StreamlyException('Invalid store provider');
+				throw new StreplyException('Invalid store provider');
 			}
 
 			// Store request

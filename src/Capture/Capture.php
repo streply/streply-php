@@ -1,17 +1,17 @@
 <?php
 
-namespace Streamly\Capture;
+namespace Streply\Capture;
 
-use Streamly\Enum\Level;
-use Streamly\Enum\CaptureType;
-use Streamly\Streamly;
-use Streamly\Entity\Event;
-use Streamly\Request\Response;
-use Streamly\Request\Handler;
-use Streamly\Exceptions\NotInitializedException;
-use Streamly\CodeSource;
-use Streamly\Time;
-use Streamly\Entity\Breadcrumb;
+use Streply\Enum\Level;
+use Streply\Enum\CaptureType;
+use Streply\Streply;
+use Streply\Entity\Event;
+use Streply\Request\Response;
+use Streply\Request\Handler;
+use Streply\Exceptions\NotInitializedException;
+use Streply\CodeSource;
+use Streply\Time;
+use Streply\Entity\Breadcrumb;
 
 class Capture
 {
@@ -23,12 +23,12 @@ class Capture
 	 * @param string $level
 	 * @return void
 	 * @throws NotInitializedException
-	 * @throws \Streamly\Exceptions\StreamlyException
+	 * @throws \Streply\Exceptions\StreplyException
 	 */
 	public static function Error(\Throwable $exception, array $params = [], string $level = Level::NORMAL): void
 	{
-		if(Streamly::isInitialize() === false) {
-			\Streamly\Log('Streamly is not initialized');
+		if(Streply::isInitialize() === false) {
+			\Streply\Log('Streply is not initialized');
 
 			throw new NotInitializedException();
 		}
@@ -90,12 +90,12 @@ class Capture
 	 * @param string|null $channel
 	 * @return void
 	 * @throws NotInitializedException
-	 * @throws \Streamly\Exceptions\StreamlyException
+	 * @throws \Streply\Exceptions\StreplyException
 	 */
 	public static function Activity(string $message, array $params = [], ?string $channel = null): void
 	{
-		if(Streamly::isInitialize() === false) {
-			\Streamly\Log('Streamly is not initialized');
+		if(Streply::isInitialize() === false) {
+			\Streply\Log('Streply is not initialized');
 
 			throw new NotInitializedException();
 		}
@@ -114,20 +114,20 @@ class Capture
 	 * @param array $params
 	 * @return void
 	 * @throws NotInitializedException
-	 * @throws \Streamly\Exceptions\InvalidBreadcrumbTypeException
-	 * @throws \Streamly\Exceptions\StreamlyException
+	 * @throws \Streply\Exceptions\InvalidBreadcrumbTypeException
+	 * @throws \Streply\Exceptions\StreplyException
 	 */
 	public static function Breadcrumb(string $type, string $message, array $params = []): void
 	{
-		if(Streamly::isInitialize() === false) {
-			\Streamly\Log('Streamly is not initialized');
+		if(Streply::isInitialize() === false) {
+			\Streply\Log('Streply is not initialized');
 
 			throw new NotInitializedException();
 		}
 
 		$breadcrumb = new Breadcrumb(
-			Streamly::traceId(),
-			Streamly::traceUniqueId(),
+			Streply::traceId(),
+			Streply::traceUniqueId(),
 			$type,
 			$message,
 			$params
