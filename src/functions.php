@@ -79,11 +79,14 @@ function Breadcrumb(string $type, string $message, array $params = []): void
 
 /**
  * @param string $message
+ * @param array $params
+ * @param string|null $channel
+ * @param string $level
  * @return void
  */
-function Log(string $message)
+function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): void
 {
-	Logs::log($message);
+	Capture::Log($message, $params, $channel, $level);
 }
 
 /**

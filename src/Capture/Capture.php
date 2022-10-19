@@ -12,6 +12,7 @@ use Streply\Exceptions\NotInitializedException;
 use Streply\CodeSource;
 use Streply\Time;
 use Streply\Entity\Breadcrumb;
+use Streply\Logs\Logs;
 
 class Capture
 {
@@ -28,7 +29,7 @@ class Capture
 	public static function Error(\Throwable $exception, array $params = [], string $level = Level::NORMAL): void
 	{
 		if(Streply::isInitialize() === false) {
-			\Streply\Log('Streply is not initialized');
+			Logs::Log('Streply is not initialized');
 
 			throw new NotInitializedException();
 		}
@@ -95,7 +96,7 @@ class Capture
 	public static function Activity(string $message, array $params = [], ?string $channel = null): void
 	{
 		if(Streply::isInitialize() === false) {
-			\Streply\Log('Streply is not initialized');
+			Logs::Log('Streply is not initialized');
 
 			throw new NotInitializedException();
 		}
@@ -120,7 +121,7 @@ class Capture
 	public static function Breadcrumb(string $type, string $message, array $params = []): void
 	{
 		if(Streply::isInitialize() === false) {
-			\Streply\Log('Streply is not initialized');
+			Logs::Log('Streply is not initialized');
 
 			throw new NotInitializedException();
 		}
@@ -135,5 +136,28 @@ class Capture
 
 		// Push
 		Handler::Handle($breadcrumb);
+	}
+
+	/**
+	 * @param string $message
+	 * @param array $params
+	 * @param string|null $channel
+	 * @param string $level
+	 * @return void
+	 */
+	public static function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): void
+	{
+		if(Streply::isInitialize() === false) {
+			Logs::Log('Streply is not initialized');
+
+			throw new NotInitializedException();
+		}
+
+		// Create record
+		$event = Event::create(CaptureType::TYPE_LOG, $message, $params, $level);
+		$event->setChannel($channel);
+
+		// Push
+		Handler::Handle($event);
 	}
 }

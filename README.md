@@ -143,6 +143,21 @@ Streply\Activity(
 );
 ```
 
+### Log
+
+```php
+<?php
+
+Streply\Log(
+    'log.name', 
+    [
+        'paramName' => 'paramValue'
+    ],
+    '#optionalChannel',
+    Level::CRITICAL 
+);
+```
+
 ### Capture levels
 
 - `Level::CRITICAL`

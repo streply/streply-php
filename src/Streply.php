@@ -109,7 +109,7 @@ class Streply
 		self::getInstance();
 
 		// Log
-		\Streply\Log(
+		Logs\Logs::Log(
 			sprintf(
 				'Initialize for %s',
 				$dsn
@@ -212,7 +212,7 @@ class Streply
 		$store->close(Streply::traceId());
 
 		// Log
-		\Streply\Log('Close');
+		Logs\Logs::Log('Close');
 	}
 
 	/**
