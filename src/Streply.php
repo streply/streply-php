@@ -11,18 +11,24 @@ use Streply\Store\Store;
 use Streply\Store\Providers\RequestProvider;
 use Streply\Store\Providers\StoreProviderInterface;
 use Streply\Entity\Event;
+use Streply\Performance\Transactions;
 
 class Streply
 {
 	/**
 	 *
 	 */
-	public const API_VERSION = '0.0.17';
+	public const API_VERSION = '0.0.19';
 
 	/**
 	 *
 	 */
 	private const UNIQUE_TRACE_ID_FORMAT = '%s_%d';
+
+	/**
+	 *
+	 */
+	private const PERFORMANCE_DEFAULT_ID = 'streply.request';
 
 	/**
 	 * @var Streply|null
@@ -75,6 +81,11 @@ class Streply
 	public static float $startTime;
 
 	/**
+	 * @var Transactions
+	 */
+	public static Transactions $performanceTransactions;
+
+	/**
 	 *
 	 */
 	protected function __construct() { }
@@ -105,8 +116,14 @@ class Streply
 		self::$userId = Session::userId();
 		self::$traceUniqueId = 0;
 		self::$startTime = Time::loadTime();
+		self::$performanceTransactions = new Transactions();
 
 		self::getInstance();
+
+		// Performance
+		if(self::$options->get('internalRequests', true) === true) {
+			Performance::Start(self::PERFORMANCE_DEFAULT_ID, 'Streply initialize');
+		}
 
 		// Log
 		Logs\Logs::Log(
@@ -198,21 +215,29 @@ class Streply
 	}
 
 	/**
+	 * @return Transactions
+	 */
+	public static function getPerformanceTransactions(): Transactions
+	{
+		return self::$performanceTransactions;
+	}
+
+	/**
 	 * @return void
 	 */
-	public static function Close(): void
+	public static function Flush(): void
 	{
-		// Event
-		if(self::getOptions()->get('internalRequests', true) === true) {
-			Activity('streamly.request');
-		}
-
 		// Close
 		$store = new Store(Streply::$options->get('storeProvider'));
 		$store->close(Streply::traceId());
 
+		// Performance
+		if(self::$options->get('internalRequests', true) === true) {
+			Performance::Finish(self::PERFORMANCE_DEFAULT_ID);
+		}
+
 		// Log
-		Logs\Logs::Log('Close');
+		Logs\Logs::Log('Flush');
 	}
 
 	/**

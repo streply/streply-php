@@ -100,7 +100,7 @@ function Logs(): array
 /**
  * @return void
  */
-function Close(): void
+function Flush(): void
 {
-	Streply::Close();
+	Streply::Flush();
 }
