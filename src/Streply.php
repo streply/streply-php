@@ -18,7 +18,7 @@ class Streply
 	/**
 	 *
 	 */
-	public const API_VERSION = '0.0.19';
+	public const API_VERSION = '0.0.20';
 
 	/**
 	 *

@@ -17,7 +17,7 @@ Streply\Initialize('https://clientPublicKey@api.streply.com/projectId');
 
 // Your code here
 
-Streply\Close();
+Streply\Flush();
 ```
 
 Where:
@@ -57,7 +57,7 @@ Streply\Initialize(
 Available providers:
 
 - RequestProvider - Send requests immediately
-- FileProvider - Storage requests in files and sends all requests after calling the function `Streply\Close();`
+- FileProvider - Storage requests in files and sends all requests after calling the function `Streply\Flush();`
 
 ### Filter events before send
 
@@ -181,6 +181,29 @@ Streply\Breadcrumb(BreadcrumbType::DEBUG, 'secondBreadcrumb for someActivity', [
 ```
 
 Available types: `BreadcrumbType::INFO`, `BreadcrumbType::DEBUG`, `BreadcrumbType::ERROR` and `BreadcrumbType::QUERY`.
+
+## Performance
+
+### Creating transaction
+```php
+Streply\Performance::Start('transactionId', 'Product checkout');
+```
+
+### Adding point
+```php
+Streply\Performance::Point('transactionId', 'calculate price');
+
+...
+
+Streply\Performance::Point('transactionId', 'cart amount', [
+    'amount' => 100.56
+]);
+```
+
+### Sending transaction
+```php
+Streply\Performance::Finish('transactionId');
+```
 
 ## Display logs
 
