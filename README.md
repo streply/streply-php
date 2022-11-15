@@ -205,6 +205,17 @@ Streply\Performance::Point('transactionId', 'cart amount', [
 Streply\Performance::Finish('transactionId');
 ```
 
+## Adding user data
+```php
+Streply\User('joey@streply.com');
+```
+or with parameters and name
+```php
+Streply\User('joey@streply.com', 'Joey Tribbiani', [
+    'createdAt' => '2022-11-10 15:10:32'
+]);
+```
+
 ## Display logs
 
 ```php
