@@ -445,6 +445,7 @@ class Event implements EntityInterface
 			'parentExceptionName' => $this->parentExceptionName,
 			'parentExceptionFileName' => $this->parentExceptionFileName,
 			'apiClientVersion' => $this->apiClientVersion,
+			'user' => Streply::$user === null ? null : Streply::$user->toArray()
 		];
 	}
 
@@ -483,6 +484,10 @@ class Event implements EntityInterface
 		// Params structure
 		if(empty($this->getParams()) === false) {
 			foreach($this->getParams() as $param) {
+				if(is_string($param['name']) === false) {
+					return 'Param name wave wrong format (only: STRING)';
+				}
+
 				if(
 					is_string($param['value']) === false &&
 					is_int($param['value']) === false &&

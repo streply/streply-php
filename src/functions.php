@@ -90,6 +90,17 @@ function Log(string $message, array $params = [], ?string $channel = null, strin
 }
 
 /**
+ * @param string $userId
+ * @param string|null $userName
+ * @param array $params
+ * @return void
+ */
+function User(string $userId, ?string $userName = null, array $params = []): void
+{
+	Streply::User($userId, $userName, $params);
+}
+
+/**
  * @return array
  */
 function Logs(): array

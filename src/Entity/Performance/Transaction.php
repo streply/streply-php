@@ -151,7 +151,8 @@ class Transaction implements EntityInterface
 			'requestContentType' => $this->requestContentType,
 			'file' => $this->file,
 			'line' => $this->line,
-			'points' => []
+			'points' => [],
+			'user' => Streply::$user === null ? null : Streply::$user->toArray()
 		];
 
 		foreach($this->points as $point) {
@@ -169,6 +170,10 @@ class Transaction implements EntityInterface
 		// Params structure
 		foreach($this->points as $point) {
 			foreach($point->params() as $name => $value) {
+				if(is_string($name) === false) {
+					return 'Param name wave wrong format (only: STRING)';
+				}
+
 				if(
 					is_string($value) === false &&
 					is_int($value) === false &&

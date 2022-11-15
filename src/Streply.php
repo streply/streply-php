@@ -12,13 +12,15 @@ use Streply\Store\Providers\RequestProvider;
 use Streply\Store\Providers\StoreProviderInterface;
 use Streply\Entity\Event;
 use Streply\Performance\Transactions;
+use Streply\Entity\User;
+use Streply\Exceptions\InvalidUserException;
 
 class Streply
 {
 	/**
 	 *
 	 */
-	public const API_VERSION = '0.0.20';
+	public const API_VERSION = '0.0.21';
 
 	/**
 	 *
@@ -84,6 +86,11 @@ class Streply
 	 * @var Transactions
 	 */
 	public static Transactions $performanceTransactions;
+
+	/**
+	 * @var User|null
+	 */
+	public static ?User $user = null;
 
 	/**
 	 *
@@ -250,5 +257,24 @@ class Streply
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * @param string $userId
+	 * @param string|null $userName
+	 * @param array $params
+	 * @return void
+	 */
+	public static function User(string $userId, ?string $userName = null, array $params = []): void
+	{
+		self::$user = new User(
+			$userId,
+			$userName ?? $userId,
+			$params
+		);
+
+		if(self::$user->getValidationError() !== null) {
+			throw new InvalidUserException(self::$user->getValidationError());
+		}
 	}
 }
