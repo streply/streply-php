@@ -69,29 +69,30 @@ class User
 	public function getValidationError(): ?string
 	{
 		// Params structure
-		foreach($this->points as $point) {
-			foreach($point->params() as $param) {
-				if(is_string($param['name']) === false) {
-					return 'Param name wave wrong format (only: STRING)';
-				}
+		foreach($this->params() as $param) {
+			if(is_string($param['name']) === false) {
+				return 'Param name wave wrong format (only: STRING)';
+			}
 
-				if(
-					is_string($param['value']) === false &&
-					is_int($param['value']) === false &&
-					is_float($param['value']) === false &&
-					is_null($param['value']) === false
-				) {
-					return sprintf(
-						'User param %s have wrong value (only: NULL, STRING, INT, FLOAT type)',
-						$param['name']
-					);
-				}
+			if(
+				is_string($param['value']) === false &&
+				is_int($param['value']) === false &&
+				is_float($param['value']) === false &&
+				is_null($param['value']) === false
+			) {
+				return sprintf(
+					'User param %s have wrong value (only: NULL, STRING, INT, FLOAT type)',
+					$param['name']
+				);
 			}
 		}
 
 		return null;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function toArray(): array
 	{
 		return [
