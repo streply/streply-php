@@ -35,4 +35,14 @@ class Options
 	{
 		return $this->options[$name] ?? $default;
 	}
+
+	/**
+	 * @param string $name
+	 * @param $value
+	 * @return void
+	 */
+	public function set(string $name, $value): void
+	{
+		$this->options[$name] = $value;
+	}
 }
