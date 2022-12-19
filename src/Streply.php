@@ -15,7 +15,7 @@ use Streply\Performance\Transactions;
 use Streply\Entity\User;
 use Streply\Exceptions\InvalidUserException;
 
-class Streply
+final class Streply
 {
 	/**
 	 *
