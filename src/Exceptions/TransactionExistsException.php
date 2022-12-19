@@ -2,7 +2,7 @@
 
 namespace Streply\Exceptions;
 
-class TransactionsExistsException extends StreplyException
+class TransactionExistsException extends StreplyException
 {
 
 }
