@@ -21,22 +21,6 @@ class Configuration
 	}
 
 	/**
-	 * @return void
-	 */
-	public static function turnOffInternalRequests(): void
-	{
-		Streply::getOptions()->set('internalRequests', false);
-	}
-
-	/**
-	 * @return void
-	 */
-	public static function turnOnInternalRequests(): void
-	{
-		Streply::getOptions()->set('internalRequests', true);
-	}
-
-	/**
 	 * @param string $environment
 	 * @return void
 	 */

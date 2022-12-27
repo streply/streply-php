@@ -128,9 +128,7 @@ final class Streply
 		self::getInstance();
 
 		// Performance
-		if(self::$options->get('internalRequests', true) === true) {
-			Performance::Start(self::PERFORMANCE_DEFAULT_ID, 'Streply initialize');
-		}
+		Performance::Start(self::PERFORMANCE_DEFAULT_ID, 'Streply initialize');
 
 		// Log
 		Logs\Logs::Log(
@@ -239,9 +237,7 @@ final class Streply
 		$store->close(Streply::traceId());
 
 		// Performance
-		if(self::$options->get('internalRequests', true) === true) {
-			Performance::Finish(self::PERFORMANCE_DEFAULT_ID);
-		}
+		Performance::Finish(self::PERFORMANCE_DEFAULT_ID);
 
 		// Log
 		Logs\Logs::Log('Flush');
