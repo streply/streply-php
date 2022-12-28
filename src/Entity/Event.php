@@ -11,6 +11,7 @@ use Streply\Enum\CaptureType;
 use Streply\Enum\Level;
 use Streply\Time;
 use Streply\Streply;
+use Streply\ParameterBag;
 
 class Event implements EntityInterface
 {
@@ -500,6 +501,11 @@ class Event implements EntityInterface
 		}
 
 		return null;
+	}
+
+	public function importFromParameterBag(ParameterBag $parameterBag): void
+	{
+
 	}
 
 	/**

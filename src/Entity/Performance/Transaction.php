@@ -5,6 +5,7 @@ namespace Streply\Entity\Performance;
 use Streply\Streply;
 use Streply\Entity\EntityInterface;
 use Streply\Time;
+use Streply\ParameterBag;
 
 /**
  *
@@ -40,18 +41,21 @@ class Transaction implements EntityInterface
 	private ?string $file;
 	private ?int $line;
 	private array $points = [];
+	private ?string $route;
 
 	/**
 	 * @param string $id
 	 * @param string $name
 	 * @param string|null $file
 	 * @param int|null $line
+	 * @param string|null $route
 	 */
 	public function __construct(
 		string $id,
 		string $name,
 		?string $file,
-		?int $line
+		?int $line,
+		?string $route = null
 	)
 	{
 		$options = Streply::getOptions();
@@ -88,6 +92,7 @@ class Transaction implements EntityInterface
 
 		$this->file = $file;
 		$this->line = $line;
+		$this->route = $route;
 	}
 
 	/**
@@ -152,7 +157,8 @@ class Transaction implements EntityInterface
 			'file' => $this->file,
 			'line' => $this->line,
 			'points' => [],
-			'user' => Streply::$user === null ? null : Streply::$user->toArray()
+			'user' => Streply::$user === null ? null : Streply::$user->toArray(),
+			'route' => $this->route,
 		];
 
 		foreach($this->points as $point) {
@@ -198,5 +204,16 @@ class Transaction implements EntityInterface
 	public function isAllowedRequest(): bool
 	{
 		return true;
+	}
+
+	/**
+	 * @param ParameterBag $parameterBag
+	 * @return void
+	 */
+	public function importFromParameterBag(ParameterBag $parameterBag): void
+	{
+		if($parameterBag->has('performance.route') && is_string($parameterBag->get('performance.route'))) {
+			$this->route = $parameterBag->get('performance.route');
+		}
 	}
 }

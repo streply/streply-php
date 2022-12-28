@@ -14,6 +14,7 @@ use Streply\Entity\Event;
 use Streply\Performance\Transactions;
 use Streply\Entity\User;
 use Streply\Exceptions\InvalidUserException;
+use Streply\ParameterBag;
 
 final class Streply
 {
@@ -92,6 +93,8 @@ final class Streply
 	 */
 	public static ?User $user = null;
 
+	public static ParameterBag $parameterBag;
+
 	/**
 	 *
 	 */
@@ -124,6 +127,7 @@ final class Streply
 		self::$traceUniqueId = 0;
 		self::$startTime = Time::loadTime();
 		self::$performanceTransactions = new Transactions();
+		self::$parameterBag = new ParameterBag();
 
 		self::getInstance();
 
@@ -272,5 +276,13 @@ final class Streply
 		if(self::$user->getValidationError() !== null) {
 			throw new InvalidUserException(self::$user->getValidationError());
 		}
+	}
+
+	/**
+	 * @return \Streply\ParameterBag
+	 */
+	public static function parameterBag(): ParameterBag
+	{
+		return self::$parameterBag;
 	}
 }

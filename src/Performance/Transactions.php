@@ -8,6 +8,7 @@ use Streply\Exceptions\TransactionExistsException;
 use Streply\Exceptions\WrongTransactionException;
 use Streply\Exceptions\InvalidRequestException;
 use Streply\Request\Request;
+use Streply\Streply;
 
 class Transactions
 {
@@ -85,6 +86,8 @@ class Transactions
 		if($this->has($transactionId) === false) {
 			throw new WrongTransactionException();
 		}
+
+		$this->transactions[$transactionId]->importFromParameterBag(Streply::parameterBag());
 
 		$this->transactions[$transactionId]->setFinishTime();
 
