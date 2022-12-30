@@ -203,6 +203,15 @@ class Transaction implements EntityInterface
 	 */
 	public function isAllowedRequest(): bool
 	{
+		if(
+			strpos($this->route, '_debugbar') !== false ||
+			strpos($this->route, '_wdt') !== false ||
+			strpos($this->url, '_debugbar') !== false ||
+			strpos($this->url, '_wdt') !== false
+		) {
+			return false;
+		}
+
 		return true;
 	}
 
