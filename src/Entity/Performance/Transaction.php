@@ -5,13 +5,15 @@ namespace Streply\Entity\Performance;
 use Streply\Streply;
 use Streply\Entity\EntityInterface;
 use Streply\Time;
-use Streply\ParameterBag;
+use Streply\Properties;
 
 /**
  *
  */
 class Transaction implements EntityInterface
 {
+	private const ALLOWED_PARAMETERS = ['route', 'release', 'environment'];
+
 	private string $id;
 	private string $name;
 	private string $dateTimeZone;
@@ -124,6 +126,22 @@ class Transaction implements EntityInterface
 	/**
 	 * @return string
 	 */
+	public function getTraceUniqueId(): string
+	{
+		return $this->traceUniqueId;
+	}
+
+	/**
+	 * @param string $traceUniqueId
+	 */
+	public function setTraceUniqueId(string $traceUniqueId): void
+	{
+		$this->traceUniqueId = $traceUniqueId;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function toJson(): string
 	{
 		$output = [
@@ -216,13 +234,23 @@ class Transaction implements EntityInterface
 	}
 
 	/**
-	 * @param ParameterBag $parameterBag
+	 * @param Properties $properties
 	 * @return void
 	 */
-	public function importFromParameterBag(ParameterBag $parameterBag): void
+	public function importFromProperties(Properties $properties): void
 	{
-		if($parameterBag->has('performance.route') && is_string($parameterBag->get('performance.route'))) {
-			$this->route = $parameterBag->get('performance.route');
+		$collections = array_merge(
+			$properties->collection($this->getTraceUniqueId()),
+			$properties->collection('performance')
+		);
+
+		foreach($collections as $name => $value) {
+			if(
+				in_array($name, self::ALLOWED_PARAMETERS, true) &&
+				property_exists($this, $name)
+			) {
+				$this->{$name} = $value;
+			}
 		}
 	}
 }

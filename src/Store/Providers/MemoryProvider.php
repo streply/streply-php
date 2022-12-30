@@ -52,6 +52,11 @@ class MemoryProvider implements StoreProviderInterface
 				}
 			}
 
+			// Add properties to event
+			if(method_exists($event, 'importFromProperties')) {
+				$event->importFromProperties(Streply::Properties());
+			}
+
 			Request::execute($event->toJson());
 		}
 	}

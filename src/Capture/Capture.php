@@ -13,6 +13,7 @@ use Streply\CodeSource;
 use Streply\Time;
 use Streply\Entity\Breadcrumb;
 use Streply\Logs\Logs;
+use Streply\Responses\Entity;
 
 class Capture
 {
@@ -22,11 +23,11 @@ class Capture
 	 * @param \Throwable $exception
 	 * @param array $params
 	 * @param string $level
-	 * @return void
+	 * @return Entity
 	 * @throws NotInitializedException
 	 * @throws \Streply\Exceptions\StreplyException
 	 */
-	public static function Error(\Throwable $exception, array $params = [], string $level = Level::NORMAL): void
+	public static function Error(\Throwable $exception, array $params = [], string $level = Level::NORMAL): Entity
 	{
 		if(Streply::isInitialize() === false) {
 			Logs::Log('Streply is not initialized');
@@ -83,17 +84,19 @@ class Capture
 
 		// Push
 		Handler::Handle($event);
+
+		return new Entity($event->getTraceUniqueId());
 	}
 
 	/**
 	 * @param string $message
 	 * @param array $params
 	 * @param string|null $channel
-	 * @return void
+	 * @return Entity
 	 * @throws NotInitializedException
 	 * @throws \Streply\Exceptions\StreplyException
 	 */
-	public static function Activity(string $message, array $params = [], ?string $channel = null): void
+	public static function Activity(string $message, array $params = [], ?string $channel = null): Entity
 	{
 		if(Streply::isInitialize() === false) {
 			Logs::Log('Streply is not initialized');
@@ -107,6 +110,8 @@ class Capture
 
 		// Push
 		Handler::Handle($event);
+
+		return new Entity($event->getTraceUniqueId());
 	}
 
 	/**
@@ -143,9 +148,9 @@ class Capture
 	 * @param array $params
 	 * @param string|null $channel
 	 * @param string $level
-	 * @return void
+	 * @return Entity
 	 */
-	public static function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): void
+	public static function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): Entity
 	{
 		if(Streply::isInitialize() === false) {
 			Logs::Log('Streply is not initialized');
@@ -159,5 +164,7 @@ class Capture
 
 		// Push
 		Handler::Handle($event);
+
+		return new Entity($event->getTraceUniqueId());
 	}
 }

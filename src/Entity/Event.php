@@ -11,10 +11,12 @@ use Streply\Enum\CaptureType;
 use Streply\Enum\Level;
 use Streply\Time;
 use Streply\Streply;
-use Streply\ParameterBag;
+use Streply\Properties;
 
 class Event implements EntityInterface
 {
+	private const ALLOWED_PARAMETERS = ['flag', 'release', 'environment', 'channel'];
+
 	private string $traceId;
 	private string $traceUniqueId;
 	private string $sessionId;
@@ -66,6 +68,7 @@ class Event implements EntityInterface
 	private float $loadTime;
 	private float $startTime;
 	private string $apiClientVersion;
+	private ?string $flag;
 
 	/**
 	 * @param string $type
@@ -139,6 +142,23 @@ class Event implements EntityInterface
 		$this->serverMemoryUsage = $server->getMemoryUsage();
 		$this->serverMemoryPeakUsage = $server->getMemoryPeakUsage();
 		$this->apiClientVersion = Streply::API_VERSION;
+		$this->flag = null;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTraceUniqueId(): string
+	{
+		return $this->traceUniqueId;
+	}
+
+	/**
+	 * @param string $traceUniqueId
+	 */
+	public function setTraceUniqueId(string $traceUniqueId): void
+	{
+		$this->traceUniqueId = $traceUniqueId;
 	}
 
 	/**
@@ -393,6 +413,22 @@ class Event implements EntityInterface
 	}
 
 	/**
+	 * @return string|null
+	 */
+	public function getFlag(): ?string
+	{
+		return $this->flag;
+	}
+
+	/**
+	 * @param string|null $flag
+	 */
+	public function setFlag(?string $flag): void
+	{
+		$this->flag = $flag;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function toArray(): array
@@ -446,7 +482,8 @@ class Event implements EntityInterface
 			'parentExceptionName' => $this->parentExceptionName,
 			'parentExceptionFileName' => $this->parentExceptionFileName,
 			'apiClientVersion' => $this->apiClientVersion,
-			'user' => Streply::$user === null ? null : Streply::$user->toArray()
+			'user' => Streply::$user === null ? null : Streply::$user->toArray(),
+			'flag' => $this->flag
 		];
 	}
 
@@ -503,9 +540,25 @@ class Event implements EntityInterface
 		return null;
 	}
 
-	public function importFromParameterBag(ParameterBag $parameterBag): void
+	/**
+	 * @param Properties $properties
+	 * @return void
+	 */
+	public function importFromProperties(Properties $properties): void
 	{
+		$collections = array_merge(
+			$properties->collection($this->getTraceUniqueId()),
+			$properties->collection('event')
+		);
 
+		foreach($collections as $name => $value) {
+			if(
+				in_array($name, self::ALLOWED_PARAMETERS, true) &&
+				property_exists($this, $name)
+			) {
+				$this->{$name} = $value;
+			}
+		}
 	}
 
 	/**

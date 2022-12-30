@@ -87,21 +87,24 @@ class Transactions
 			throw new WrongTransactionException();
 		}
 
-		$this->transactions[$transactionId]->importFromParameterBag(Streply::parameterBag());
+		// Request is correct
+		if($this->transactions[$transactionId]->isAllowedRequest()) {
+			$this->transactions[$transactionId]->importFromProperties(Streply::Properties());
 
-		$this->transactions[$transactionId]->setFinishTime();
+			$this->transactions[$transactionId]->setFinishTime();
 
-		// Validation
-		$validationError = $this->transactions[$transactionId]->getValidationError();
+			// Validation
+			$validationError = $this->transactions[$transactionId]->getValidationError();
 
-		if($validationError !== null) {
-			throw new InvalidRequestException($validationError);
+			if($validationError !== null) {
+				throw new InvalidRequestException($validationError);
+			}
+
+			// Send request to API
+			Request::execute(
+				$this->transactions[$transactionId]->toJson()
+			);
 		}
-
-		// Send request to API
-		Request::execute(
-			$this->transactions[$transactionId]->toJson()
-		);
 	}
 
 	/**

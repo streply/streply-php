@@ -8,20 +8,20 @@ use Streply\Input\Http;
 use Streply\Input\Server;
 use Streply\Session;
 use Streply\Store\Store;
-use Streply\Store\Providers\RequestProvider;
+use Streply\Store\Providers\MemoryProvider;
 use Streply\Store\Providers\StoreProviderInterface;
 use Streply\Entity\Event;
 use Streply\Performance\Transactions;
 use Streply\Entity\User;
 use Streply\Exceptions\InvalidUserException;
-use Streply\ParameterBag;
+use Streply\Properties;
 
 final class Streply
 {
 	/**
 	 *
 	 */
-	public const API_VERSION = '0.0.30';
+	public const API_VERSION = '0.0.33';
 
 	/**
 	 *
@@ -93,7 +93,7 @@ final class Streply
 	 */
 	public static ?User $user = null;
 
-	public static ParameterBag $parameterBag;
+	public static Properties $properties;
 
 	/**
 	 *
@@ -113,9 +113,7 @@ final class Streply
 	 */
 	public static function Initialize(string $dsn, array $options = []): void
 	{
-		if(isset($options['storeProvider']) === false || !($options['storeProvider'] instanceof StoreProviderInterface)) {
-			$options['storeProvider'] = new RequestProvider();
-		}
+		$options['storeProvider'] = new MemoryProvider();
 		
 		self::$dsn = new Dsn($dsn);
 		self::$options = new Options($options);
@@ -127,7 +125,7 @@ final class Streply
 		self::$traceUniqueId = 0;
 		self::$startTime = Time::loadTime();
 		self::$performanceTransactions = new Transactions();
-		self::$parameterBag = new ParameterBag();
+		self::$properties = new Properties();
 
 		self::getInstance();
 
@@ -279,10 +277,10 @@ final class Streply
 	}
 
 	/**
-	 * @return \Streply\ParameterBag
+	 * @return Properties
 	 */
-	public static function parameterBag(): ParameterBag
+	public static function Properties(): Properties
 	{
-		return self::$parameterBag;
+		return self::$properties;
 	}
 }

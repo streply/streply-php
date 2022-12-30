@@ -10,6 +10,7 @@ use Streply\Streply;
 use Streply\Enum\Level;
 use Streply\Request\Response;
 use Streply\Entity\Breadcrumb;
+use Streply\Responses\Entity;
 
 /**
  * @return void
@@ -45,24 +46,24 @@ function Initialize(string $dsn, array $options = [])
  * @param \Throwable $exception
  * @param array $params
  * @param string $level
- * @return void
+ * @return Entity
  * @throws Exceptions\NotInitializedException
  */
-function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): void
+function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): Entity
 {
-	Capture::Error($exception, $params, $level);
+	return Capture::Error($exception, $params, $level);
 }
 
 /**
  * @param string $message
  * @param array $params
  * @param string|null $channel
- * @return void
+ * @return Entity
  * @throws Exceptions\NotInitializedException
  */
-function Activity(string $message, array $params = [], ?string $channel = null): void
+function Activity(string $message, array $params = [], ?string $channel = null): Entity
 {
-	Capture::Activity($message, $params, $channel);
+	return Capture::Activity($message, $params, $channel);
 }
 
 /**
@@ -82,11 +83,11 @@ function Breadcrumb(string $type, string $message, array $params = []): void
  * @param array $params
  * @param string|null $channel
  * @param string $level
- * @return void
+ * @return Entity
  */
-function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): void
+function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): Entity
 {
-	Capture::Log($message, $params, $channel, $level);
+	return Capture::Log($message, $params, $channel, $level);
 }
 
 /**
