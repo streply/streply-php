@@ -39,26 +39,6 @@ Streply\Initialize(
 );
 ```
 
-### Change store provider
-
-```php
-<?php
-
-Streply\Initialize(
-    'https://clientPublicKey@api.streply.com/projectId',
-    [
-        'storeProvider' => new Streply\Store\Providers\FileProvider(
-            __DIR__ . '/store'
-        )
-    ]
-);
-```
-
-Available providers:
-
-- RequestProvider - Send requests immediately
-- FileProvider - Storage requests in files and sends all requests after calling the function `Streply\Flush();`
-
 ### Filter events before send
 
 ```php
