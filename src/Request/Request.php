@@ -21,6 +21,9 @@ class Request
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
 		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_USERAGENT, sprintf('Streply PHP %s', Streply::API_VERSION));
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 		curl_setopt($ch, CURLOPT_HTTPHEADER,
 			[
 				sprintf('Token: %s', Streply::getDsn()->getPublicKey()),
