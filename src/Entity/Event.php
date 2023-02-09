@@ -566,18 +566,20 @@ class Event implements EntityInterface
 	 */
 	public function isAllowedRequest(): bool
 	{
-		if(
-			strpos($this->getRequestUri(), '/favicon.') !== false ||
-			strpos($this->getRequestUri(), '/fav.ico') !== false ||
-			strpos($this->getRequestUri(), 'apple-touch-icon.png') !== false ||
-			strpos($this->getRequestUri(), 'apple-touch-icon-precomposed.png') !== false ||
-			strpos($this->getRequestUri(), 'sitemap.txt') !== false ||
-			strpos($this->getRequestUri(), 'sitemap.xml') !== false ||
-			strpos($this->getRequestUri(), 'robots.txt') !== false ||
-			strpos($this->getRequestUri(), '/_debugbar') !== false ||
-			strpos($this->getRequestUri(), '/_wdt') !== false
-		) {
-			return false;
+		if($this->getRequestUri() !== null) {
+			if(
+				strpos($this->getRequestUri(), '/favicon.') !== false ||
+				strpos($this->getRequestUri(), '/fav.ico') !== false ||
+				strpos($this->getRequestUri(), 'apple-touch-icon.png') !== false ||
+				strpos($this->getRequestUri(), 'apple-touch-icon-precomposed.png') !== false ||
+				strpos($this->getRequestUri(), 'sitemap.txt') !== false ||
+				strpos($this->getRequestUri(), 'sitemap.xml') !== false ||
+				strpos($this->getRequestUri(), 'robots.txt') !== false ||
+				strpos($this->getRequestUri(), '/_debugbar') !== false ||
+				strpos($this->getRequestUri(), '/_wdt') !== false
+			) {
+				return false;
+			}
 		}
 
 		return true;
