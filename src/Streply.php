@@ -113,7 +113,9 @@ final class Streply
 	 */
 	public static function Initialize(string $dsn, array $options = []): void
 	{
-		$options['storeProvider'] = new MemoryProvider();
+		if(isset($options['storeProvider']) === false) {
+			$options['storeProvider'] = new MemoryProvider();
+		}
 		
 		self::$dsn = new Dsn($dsn);
 		self::$options = new Options($options);
