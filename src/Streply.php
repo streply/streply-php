@@ -21,7 +21,7 @@ final class Streply
 	/**
 	 *
 	 */
-	public const API_VERSION = '0.0.35';
+	public const API_VERSION = '0.0.39';
 
 	/**
 	 *
@@ -93,6 +93,9 @@ final class Streply
 	 */
 	public static ?User $user = null;
 
+	/**
+	 * @var \Streply\Properties 
+	 */
 	public static Properties $properties;
 
 	/**
@@ -236,15 +239,17 @@ final class Streply
 	 */
 	public static function Flush(): void
 	{
-		// Close
-		$store = new Store(Streply::$options->get('storeProvider'));
-		$store->close(Streply::traceId());
+		if(true === self::isInitialize()) {
+			// Close
+			$store = new Store(Streply::$options->get('storeProvider'));
+			$store->close(Streply::traceId());
 
-		// Performance
-		Performance::Finish(self::PERFORMANCE_DEFAULT_ID);
+			// Performance
+			Performance::Finish(self::PERFORMANCE_DEFAULT_ID);
 
-		// Log
-		Logs\Logs::Log('Flush');
+			// Log
+			Logs\Logs::Log('Flush');
+		}
 	}
 
 	/**

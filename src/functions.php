@@ -46,10 +46,10 @@ function Initialize(string $dsn, array $options = [])
  * @param \Throwable $exception
  * @param array $params
  * @param string $level
- * @return Entity
+ * @return Entity|null
  * @throws Exceptions\NotInitializedException
  */
-function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): Entity
+function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
 {
 	return Capture::Error($exception, $params, $level);
 }
@@ -58,10 +58,10 @@ function Exception(\Throwable $exception, array $params = [], string $level = Le
  * @param string $message
  * @param array $params
  * @param string|null $channel
- * @return Entity
+ * @return Entity|null
  * @throws Exceptions\NotInitializedException
  */
-function Activity(string $message, array $params = [], ?string $channel = null): Entity
+function Activity(string $message, array $params = [], ?string $channel = null): ?Entity
 {
 	return Capture::Activity($message, $params, $channel);
 }
@@ -83,9 +83,9 @@ function Breadcrumb(string $type, string $message, array $params = []): void
  * @param array $params
  * @param string|null $channel
  * @param string $level
- * @return Entity
+ * @return Entity|null
  */
-function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): Entity
+function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): ?Entity
 {
 	return Capture::Log($message, $params, $channel, $level);
 }

@@ -23,95 +23,120 @@ class Capture
 	 * @param \Throwable $exception
 	 * @param array $params
 	 * @param string $level
-	 * @return Entity
+	 * @return Entity|null
 	 * @throws NotInitializedException
 	 * @throws \Streply\Exceptions\StreplyException
 	 */
-	public static function Error(\Throwable $exception, array $params = [], string $level = Level::NORMAL): Entity
+	public static function Error(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
 	{
-		if(Streply::isInitialize() === false) {
-			Logs::Log('Streply is not initialized');
+		if(true === Streply::isInitialize()) {
+			// Create record
+			$event = Event::create(CaptureType::TYPE_ERROR, $exception->getMessage(), $params, $level);
+			$event->setFile($exception->getFile());
+			$event->setLine($exception->getLine());
 
-			throw new NotInitializedException();
-		}
+			// Custom HTTP status code
+			if(method_exists($exception, 'getStatusCode')) {
+				$exceptionStatusCode = $exception->getStatusCode();
 
-		// Create record
-		$event = Event::create(CaptureType::TYPE_ERROR, $exception->getMessage(), $params, $level);
-		$event->setFile($exception->getFile());
-		$event->setLine($exception->getLine());
-
-		// Custom HTTP status code
-		if(method_exists($exception, 'getStatusCode')) {
-			$exceptionStatusCode = $exception->getStatusCode();
-
-			if(is_int($exceptionStatusCode)) {
-				$event->setHttpStatusCode($exceptionStatusCode);
+				if(is_int($exceptionStatusCode)) {
+					$event->setHttpStatusCode($exceptionStatusCode);
+				}
 			}
-		}
 
-		$reflectionClass = new \ReflectionClass($exception);
+			$reflectionClass = new \ReflectionClass($exception);
 
-		$event->setExceptionName($reflectionClass->getName());
-		$event->setExceptionFileName($reflectionClass->getFileName());
+			$event->setExceptionName($reflectionClass->getName());
+			$event->setExceptionFileName($reflectionClass->getFileName());
 
-		if($reflectionClass->getParentClass() !== false) {
-			$event->setParentExceptionName($reflectionClass->getParentClass()->getName());
-			$event->setParentExceptionFileName($reflectionClass->getParentClass()->getFileName());
-		}
-
-		// Trace
-		$event->addTrace(
-			$exception->getFile(),
-			$exception->getLine(),
-			null,
-			null,
-			[],
-			CodeSource::load($exception->getFile(), $exception->getLine(), self::SOURCE_LINE_NUMBERS)
-		);
-
-		foreach($exception->getTrace() as $trace) {
-			if(isset($trace['file'], $trace['line'])) {
-				$event->addTrace(
-					$trace['file'],
-					$trace['line'],
-					$trace['function'] ?? null,
-					$trace['class'] ?? null,
-					$trace['args'] ?? [],
-					CodeSource::load($trace['file'], $trace['line'], self::SOURCE_LINE_NUMBERS)
-				);
+			if($reflectionClass->getParentClass() !== false) {
+				$event->setParentExceptionName($reflectionClass->getParentClass()->getName());
+				$event->setParentExceptionFileName($reflectionClass->getParentClass()->getFileName());
 			}
+
+			// Trace
+			$event->addTrace(
+				$exception->getFile(),
+				$exception->getLine(),
+				null,
+				null,
+				[],
+				CodeSource::load($exception->getFile(), $exception->getLine(), self::SOURCE_LINE_NUMBERS)
+			);
+
+			foreach($exception->getTrace() as $trace) {
+				if(isset($trace['file'], $trace['line'])) {
+					$event->addTrace(
+						$trace['file'],
+						$trace['line'],
+						$trace['function'] ?? null,
+						$trace['class'] ?? null,
+						$trace['args'] ?? [],
+						CodeSource::load($trace['file'], $trace['line'], self::SOURCE_LINE_NUMBERS)
+					);
+				}
+			}
+
+			// Push
+			Handler::Handle($event);
+
+			return new Entity($event->getTraceUniqueId());
 		}
 
-		// Push
-		Handler::Handle($event);
+		Logs::Log('Streply is not initialized');
 
-		return new Entity($event->getTraceUniqueId());
+		return null;
 	}
 
 	/**
 	 * @param string $message
 	 * @param array $params
 	 * @param string|null $channel
-	 * @return Entity
+	 * @return Entity|null
 	 * @throws NotInitializedException
 	 * @throws \Streply\Exceptions\StreplyException
 	 */
-	public static function Activity(string $message, array $params = [], ?string $channel = null): Entity
+	public static function Activity(string $message, array $params = [], ?string $channel = null): ?Entity
 	{
-		if(Streply::isInitialize() === false) {
-			Logs::Log('Streply is not initialized');
+		if(true === Streply::isInitialize()) {
+			// Create record
+			$event = Event::create(CaptureType::TYPE_ACTIVITY, $message, $params);
+			$event->setChannel($channel);
 
-			throw new NotInitializedException();
+			// Push
+			Handler::Handle($event);
+
+			return new Entity($event->getTraceUniqueId());
 		}
 
-		// Create record
-		$event = Event::create(CaptureType::TYPE_ACTIVITY, $message, $params);
-		$event->setChannel($channel);
+		Logs::Log('Streply is not initialized');
 
-		// Push
-		Handler::Handle($event);
+		return null;
+	}
 
-		return new Entity($event->getTraceUniqueId());
+	/**
+	 * @param string $message
+	 * @param array $params
+	 * @param string|null $channel
+	 * @param string $level
+	 * @return Entity|null
+	 */
+	public static function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): ?Entity
+	{
+		if(true === Streply::isInitialize()) {
+			// Create record
+			$event = Event::create(CaptureType::TYPE_LOG, $message, $params, $level);
+			$event->setChannel($channel);
+
+			// Push
+			Handler::Handle($event);
+
+			return new Entity($event->getTraceUniqueId());
+		}
+
+		Logs::Log('Streply is not initialized');
+
+		return null;
 	}
 
 	/**
@@ -125,46 +150,17 @@ class Capture
 	 */
 	public static function Breadcrumb(string $type, string $message, array $params = []): void
 	{
-		if(Streply::isInitialize() === false) {
-			Logs::Log('Streply is not initialized');
+		if(true === Streply::isInitialize()) {
+			$breadcrumb = new Breadcrumb(
+				Streply::traceId(),
+				Streply::traceUniqueId(),
+				$type,
+				$message,
+				$params
+			);
 
-			throw new NotInitializedException();
+			// Push
+			Handler::Handle($breadcrumb);
 		}
-
-		$breadcrumb = new Breadcrumb(
-			Streply::traceId(),
-			Streply::traceUniqueId(),
-			$type,
-			$message,
-			$params
-		);
-
-		// Push
-		Handler::Handle($breadcrumb);
-	}
-
-	/**
-	 * @param string $message
-	 * @param array $params
-	 * @param string|null $channel
-	 * @param string $level
-	 * @return Entity
-	 */
-	public static function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): Entity
-	{
-		if(Streply::isInitialize() === false) {
-			Logs::Log('Streply is not initialized');
-
-			throw new NotInitializedException();
-		}
-
-		// Create record
-		$event = Event::create(CaptureType::TYPE_LOG, $message, $params, $level);
-		$event->setChannel($channel);
-
-		// Push
-		Handler::Handle($event);
-
-		return new Entity($event->getTraceUniqueId());
 	}
 }
