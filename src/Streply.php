@@ -234,10 +234,11 @@ final class Streply
 		return self::$performanceTransactions;
 	}
 
-	/**
-	 * @return void
-	 */
-	public static function Flush(): void
+    /**
+     * @param bool $flushPerformance
+     * @return void
+     */
+	public static function Flush(bool $flushPerformance = true): void
 	{
 		if(true === self::isInitialize()) {
 			// Close
@@ -245,7 +246,9 @@ final class Streply
 			$store->close(Streply::traceId());
 
 			// Performance
-			Performance::Finish(self::PERFORMANCE_DEFAULT_ID);
+            if(true === $flushPerformance) {
+                Performance::Finish(self::PERFORMANCE_DEFAULT_ID);
+            }
 
 			// Log
 			Logs\Logs::Log('Flush');

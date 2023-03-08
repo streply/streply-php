@@ -2,7 +2,6 @@
 
 namespace Streply\Responses;
 
-use Streply\Entity\Event;
 use Streply\Enum\EventFlag;
 use Streply\Exceptions\StreplyException;
 use Streply\Streply;
@@ -48,4 +47,14 @@ class Entity
 
 		return $this;
 	}
+
+    /**
+     * @return Entity
+     */
+    public function sendImmediately(): Entity
+    {
+        Streply::Flush(false);
+
+        return $this;
+    }
 }
