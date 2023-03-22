@@ -14,6 +14,7 @@ use Streply\Responses\Entity;
 
 /**
  * @return void
+ * @throws Exceptions\StreplyException
  */
 function ErrorHandler()
 {
@@ -47,11 +48,18 @@ function Initialize(string $dsn, array $options = [])
  * @param array $params
  * @param string $level
  * @return Entity|null
- * @throws Exceptions\NotInitializedException
+ * @throws Exceptions\StreplyException
  */
 function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
 {
-	return Capture::Error($exception, $params, $level);
+	$exception = Capture::Error($exception, $params, $level);
+
+    // Send errors immediately
+    if($exception !== null) {
+        $exception->sendImmediately();
+    }
+
+    return $exception;
 }
 
 /**
@@ -59,7 +67,7 @@ function Exception(\Throwable $exception, array $params = [], string $level = Le
  * @param array $params
  * @param string|null $channel
  * @return Entity|null
- * @throws Exceptions\NotInitializedException
+ * @throws Exceptions\StreplyException
  */
 function Activity(string $message, array $params = [], ?string $channel = null): ?Entity
 {
@@ -71,7 +79,7 @@ function Activity(string $message, array $params = [], ?string $channel = null):
  * @param string $message
  * @param array $params
  * @return void
- * @throws Exceptions\NotInitializedException
+ * @throws Exceptions\StreplyException
  */
 function Breadcrumb(string $type, string $message, array $params = []): void
 {
@@ -95,6 +103,7 @@ function Log(string $message, array $params = [], ?string $channel = null, strin
  * @param string|null $userName
  * @param array $params
  * @return void
+ * @throws Exceptions\StreplyException
  */
 function User(string $userId, ?string $userName = null, array $params = []): void
 {
