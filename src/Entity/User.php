@@ -78,10 +78,11 @@ class User
 				is_string($param['value']) === false &&
 				is_int($param['value']) === false &&
 				is_float($param['value']) === false &&
-				is_null($param['value']) === false
+				is_null($param['value']) === false &&
+                is_bool($param['value']) === false
 			) {
 				return sprintf(
-					'User param %s have wrong value (only: NULL, STRING, INT, FLOAT type)',
+					'User param %s have wrong value (only: NULL, STRING, INT, FLOAT, BOOL type)',
 					$param['name']
 				);
 			}

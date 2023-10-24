@@ -530,9 +530,10 @@ class Event implements EntityInterface
 					is_string($param['value']) === false &&
 					is_int($param['value']) === false &&
 					is_float($param['value']) === false &&
-					is_null($param['value']) === false
-				) {
-					return sprintf('Param %s have wrong value (only: NULL, STRING, INT, FLOAT type)', $param['name']);
+					is_null($param['value']) === false &&
+                    is_bool($param['value']) === false
+                ) {
+					return sprintf('Param %s have wrong value (only: NULL, STRING, INT, FLOAT, BOOL type)', $param['name']);
 				}
 			}
 		}

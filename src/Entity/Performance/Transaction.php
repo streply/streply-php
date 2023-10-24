@@ -202,10 +202,11 @@ class Transaction implements EntityInterface
 					is_string($value) === false &&
 					is_int($value) === false &&
 					is_float($value) === false &&
-					is_null($value) === false
+					is_null($value) === false &&
+                    is_bool($value) === false
 				) {
 					return sprintf(
-						'Param %s in point %s have wrong value (only: NULL, STRING, INT, FLOAT type)',
+						'Param %s in point %s have wrong value (only: NULL, STRING, INT, FLOAT, BOOL type)',
 						$name,
 						$point->name()
 					);
