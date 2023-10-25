@@ -179,6 +179,10 @@ class Event implements EntityInterface
 	 */
 	public function addParam(string $name, $value): void
 	{
+        if(is_array($value)) {
+            $value = json_encode($value);
+        }
+
 		$this->params[] = ['name' => $name, 'value' => $value];
 	}
 

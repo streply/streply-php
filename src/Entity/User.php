@@ -35,6 +35,10 @@ class User
 		$this->userName = $userName;
 
 		foreach($params as $name => $value) {
+            if(is_array($value)) {
+                $value = json_encode($value);
+            }
+
 			$this->params[] = ['name' => $name, 'value' => $value];
 		}
 	}
