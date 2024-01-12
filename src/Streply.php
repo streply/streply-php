@@ -14,11 +14,9 @@ use Streply\Store\Store;
 
 final class Streply
 {
-    public const API_VERSION = '0.0.42';
+    public const API_VERSION = '0.0.47';
 
     private const UNIQUE_TRACE_ID_FORMAT = '%s_%d';
-
-    private const PERFORMANCE_DEFAULT_ID = 'streply.request';
 
     private static ?self $instance = null;
 
@@ -76,9 +74,6 @@ final class Streply
         self::$properties = new Properties();
 
         self::getInstance();
-
-        // Performance
-        Performance::Start(self::PERFORMANCE_DEFAULT_ID, 'Streply initialize');
 
         // Log
         Logs\Logs::Log(
@@ -144,17 +139,12 @@ final class Streply
         return self::$performanceTransactions;
     }
 
-    public static function Flush(bool $flushPerformance = true): void
+    public static function Flush(): void
     {
         if (true === self::isInitialize()) {
             // Close
             $store = new Store(Streply::$options->get('storeProvider'));
             $store->close(Streply::traceId());
-
-            // Performance
-            if (true === $flushPerformance) {
-                Performance::Finish(self::PERFORMANCE_DEFAULT_ID);
-            }
 
             // Log
             Logs\Logs::Log('Flush');
