@@ -7,17 +7,12 @@ composer require streply/streply-php
 ```
 ## Initialization
 
-Initialize Streply on beginning your code and close the connection after your code.<br>
-Both functions are mandatory for correctly working.
+Initialize Streply on beginning your code.
 
 ```php
 <?php
 
 Streply\Initialize('https://clientPublicKey@api.streply.com/projectId');
-
-// Your code here
-
-Streply\Flush();
 ```
 
 Where:
