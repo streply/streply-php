@@ -145,23 +145,6 @@ Streply\Log(
 - `Level::NORMAL`
 - `Level::LOW`
 
-## Breadcrumbs
-
-```php
-<?php
-
-use Streply\Enum\BreadcrumbType;
-
-Streply\Activity('someActivity');
-
-Streply\Breadcrumb(BreadcrumbType::INFO, 'firstBreadcrumb for someActivity');
-Streply\Breadcrumb(BreadcrumbType::DEBUG, 'secondBreadcrumb for someActivity', [
-    'parameterName' => 'parameterValue'
-]);
-```
-
-Available types: `BreadcrumbType::INFO`, `BreadcrumbType::DEBUG`, `BreadcrumbType::ERROR` and `BreadcrumbType::QUERY`.
-
 ## Performance
 
 ### Creating transaction
