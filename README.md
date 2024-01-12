@@ -58,19 +58,6 @@ Streply\Initialize(
 );
 ```
 
-### Turn off Streply internal requests
-
-```php
-<?php
-
-Streply\Initialize(
-    'https://clientPublicKey@api.streply.com/projectId',
-    [
-        'internalRequests' => false
-    ]
-);
-```
-
 ## Capture
 
 ### Exception
