@@ -4,44 +4,30 @@ namespace Streply\Request;
 
 class Response
 {
-	private const STATUS_SUCCESS = 'success';
-	private const STATUS_ERROR = 'error';
+    private const STATUS_SUCCESS = 'success';
 
-	/**
-	 * @var array
-	 */
-	private array $response;
+    private const STATUS_ERROR = 'error';
 
-	/**
-	 * @param string $response
-	 */
-	public function __construct(string $response)
-	{
-		$decode = @json_decode($response, true);
-		$this->response = is_array($decode) ? $decode : [];
-	}
+    private array $response;
 
-	/**
-	 * @return bool
-	 */
-	public function isSuccess(): bool
-	{
-		return isset($this->response['status']) && $this->response['status'] === self::STATUS_SUCCESS;
-	}
+    public function __construct(string $response)
+    {
+        $decode = @json_decode($response, true);
+        $this->response = is_array($decode) ? $decode : [];
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getError(): ?string
-	{
-		return $this->response['data']['message'] ?? null;
-	}
+    public function isSuccess(): bool
+    {
+        return isset($this->response['status']) && $this->response['status'] === self::STATUS_SUCCESS;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getOutput(): array
-	{
-		return $this->response['data'] ?? [];
-	}
+    public function getError(): ?string
+    {
+        return $this->response['data']['message'] ?? null;
+    }
+
+    public function getOutput(): array
+    {
+        return $this->response['data'] ?? [];
+    }
 }

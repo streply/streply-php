@@ -4,69 +4,58 @@ namespace Streply;
 
 class Session
 {
-	private const SESSION_ID_COOKIE = 'streamly_session_id';
-	private const USER_ID_COOKIE = 'streamly_user_id';
+    private const SESSION_ID_COOKIE = 'streamly_session_id';
 
-	/**
-	 * @return string
-	 */
-	private static function generateRandomId(): string
-	{
-		$permittedChars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    private const USER_ID_COOKIE = 'streamly_user_id';
 
-		return sha1(
-			sprintf(
-				'%s.%s.%d',
-				Streply::getDsn()->getProjectId(),
-				substr(
-					str_shuffle($permittedChars),
-					0,
-					16
-				),
-				time()
-			)
-		);
-	}
+    private static function generateRandomId(): string
+    {
+        $permittedChars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-	/**
-	 * @return string
-	 */
-	public static function traceId(): string
-	{
-		return self::generateRandomId();
-	}
+        return sha1(
+            sprintf(
+                '%s.%s.%d',
+                Streply::getDsn()->getProjectId(),
+                substr(
+                    str_shuffle($permittedChars),
+                    0,
+                    16
+                ),
+                time()
+            )
+        );
+    }
 
-	/**
-	 * @return string
-	 */
-	public static function sessionId(): string
-	{
-		if(isset($_COOKIE[Session::SESSION_ID_COOKIE])) {
-			setcookie(Session::SESSION_ID_COOKIE, $_COOKIE[Session::SESSION_ID_COOKIE], time()+3600);
+    public static function traceId(): string
+    {
+        return self::generateRandomId();
+    }
 
-			return $_COOKIE[Session::SESSION_ID_COOKIE];
-		}
+    public static function sessionId(): string
+    {
+        if (isset($_COOKIE[Session::SESSION_ID_COOKIE])) {
+            setcookie(Session::SESSION_ID_COOKIE, $_COOKIE[Session::SESSION_ID_COOKIE], time() + 3600);
 
-		$sessionId = self::generateRandomId();
+            return $_COOKIE[Session::SESSION_ID_COOKIE];
+        }
 
-		setcookie(Session::SESSION_ID_COOKIE, $sessionId, time()+3600);
+        $sessionId = self::generateRandomId();
 
-		return $sessionId;
-	}
+        setcookie(Session::SESSION_ID_COOKIE, $sessionId, time() + 3600);
 
-	/**
-	 * @return string
-	 */
-	public static function userId(): string
-	{
-		if(isset($_COOKIE[Session::USER_ID_COOKIE])) {
-			return $_COOKIE[Session::USER_ID_COOKIE];
-		}
+        return $sessionId;
+    }
 
-		$userId = self::generateRandomId();
+    public static function userId(): string
+    {
+        if (isset($_COOKIE[Session::USER_ID_COOKIE])) {
+            return $_COOKIE[Session::USER_ID_COOKIE];
+        }
 
-		setcookie(Session::USER_ID_COOKIE, $userId, time()+3600*24*365*10);
+        $userId = self::generateRandomId();
 
-		return $userId;
-	}
+        setcookie(Session::USER_ID_COOKIE, $userId, time() + 3600 * 24 * 365 * 10);
+
+        return $userId;
+    }
 }

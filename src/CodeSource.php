@@ -4,69 +4,55 @@ namespace Streply;
 
 class CodeSource
 {
-	/**
-	 * @param string $string
-	 * @return string
-	 */
-	public function trim(string $string): string
-	{
-		$string = str_replace(['<', '>'], ['&lt;', '&gt;'], $string);
-		$string = str_replace("\n", "", $string);
-		$string = strip_tags($string);
+    public function trim(string $string): string
+    {
+        $string = str_replace(['<', '>'], ['&lt;', '&gt;'], $string);
+        $string = str_replace("\n", "", $string);
+        $string = strip_tags($string);
 
-		return $string;
-	}
+        return $string;
+    }
 
-	/**
-	 * @param string $fileName
-	 * @return array
-	 */
-	public function loadFile(string $fileName): array
-	{
-		$file = file($fileName);
-		$output = [];
+    public function loadFile(string $fileName): array
+    {
+        $file = file($fileName);
+        $output = [];
 
-		foreach($file as $lineNumber => $line) {
-			$output[$lineNumber+1] = $this->trim($line);
-		}
+        foreach ($file as $lineNumber => $line) {
+            $output[$lineNumber + 1] = $this->trim($line);
+        }
 
-		return $output;
-	}
+        return $output;
+    }
 
-	/**
-	 * @param string $fileName
-	 * @param int $line
-	 * @param int $margin
-	 * @return array
-	 */
-	public static function load(string $fileName, int $line, int $margin): array
-	{
-		if(is_file($fileName)) {
-			$source = new CodeSource();
-			$output = [];
-			$file = $source->loadFile($fileName);
+    public static function load(string $fileName, int $line, int $margin): array
+    {
+        if (is_file($fileName)) {
+            $source = new CodeSource();
+            $output = [];
+            $file = $source->loadFile($fileName);
 
-			if(isset($file[$line])) {
-				for($i = $line; $i >= $line-$margin; --$i) {
-					if(isset($file[$i])) {
-						$output[$i] = $file[$i];
-					}
-				}
+            if (isset($file[$line])) {
+                for ($i = $line; $i >= $line - $margin; --$i) {
+                    if (isset($file[$i])) {
+                        $output[$i] = $file[$i];
+                    }
+                }
 
-				$output[$line] = $file[$line];
+                $output[$line] = $file[$line];
 
-				for($i = $line; $i <= $line+$margin; ++$i) {
-					if(isset($file[$i])) {
-						$output[$i] = $file[$i];
-					}
-				}
-			}
+                for ($i = $line; $i <= $line + $margin; ++$i) {
+                    if (isset($file[$i])) {
+                        $output[$i] = $file[$i];
+                    }
+                }
+            }
 
-			ksort($output);
+            ksort($output);
 
-			return $output;
-		}
+            return $output;
+        }
 
-		return [];
-	}
+        return [];
+    }
 }

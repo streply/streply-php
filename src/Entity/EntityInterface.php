@@ -4,23 +4,11 @@ namespace Streply\Entity;
 
 interface EntityInterface
 {
-	/**
-	 * @return string
-	 */
-	public function getTraceId(): string;
+    public function getTraceId(): string;
 
-	/**
-	 * @return string
-	 */
-	public function toJson(): string;
+    public function toJson(): string;
 
-	/**
-	 * @return string|null
-	 */
-	public function getValidationError(): ?string;
+    public function getValidationError(): ?string;
 
-	/**
-	 * @return bool
-	 */
-	public function isAllowedRequest(): bool;
+    public function isAllowedRequest(): bool;
 }

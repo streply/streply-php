@@ -4,213 +4,157 @@ namespace Streply\Input;
 
 class Http
 {
-	private const DEFAULT_PORT = 80;
-	private const DEFAULT_SCHEME = 'http';
-	private const DEFAULT_METHOD = 'GET';
+    private const DEFAULT_PORT = 80;
 
-	/**
-	 * @var array
-	 */
-	private array $request;
+    private const DEFAULT_SCHEME = 'http';
 
-	/**
-	 * @param array $request
-	 */
-	public function __construct(array $request)
-	{
-		$this->request = $request;
-	}
+    private const DEFAULT_METHOD = 'GET';
 
-	/**
-	 * @param string $name
-	 * @param string|null $default
-	 * @return mixed
-	 */
-	private function get(string $name, ?string $default = null)
-	{
-		return $this->request[$name] ?? $default;
-	}
+    private array $request;
 
-	/**
-	 * @return string|null
-	 */
-	public function getHost(): ?string
-	{
-		return $this->get('HTTP_HOST');
-	}
+    public function __construct(array $request)
+    {
+        $this->request = $request;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getUserAgent(): string
-	{
-		$userAgent = $this->get('HTTP_USER_AGENT');
+    /**
+     * @return mixed
+     */
+    private function get(string $name, ?string $default = null)
+    {
+        return $this->request[$name] ?? $default;
+    }
 
-		if($userAgent !== null) {
-			return $userAgent;
-		}
+    public function getHost(): ?string
+    {
+        return $this->get('HTTP_HOST');
+    }
 
-		$phpSelf = $this->get('PHP_SELF');
+    public function getUserAgent(): string
+    {
+        $userAgent = $this->get('HTTP_USER_AGENT');
 
-		if($phpSelf !== null) {
-			return $phpSelf;
-		}
+        if ($userAgent !== null) {
+            return $userAgent;
+        }
 
-		return '';
-	}
+        $phpSelf = $this->get('PHP_SELF');
 
-	/**
-	 * @return string|null
-	 */
-	public function getLanguage(): ?string
-	{
-		return $this->get('HTTP_ACCEPT_LANGUAGE');
-	}
+        if ($phpSelf !== null) {
+            return $phpSelf;
+        }
 
-	/**
-	 * @return string|null
-	 */
-	public function getServerName(): ?string
-	{
-		return $this->get('SERVER_NAME');
-	}
+        return '';
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getServerSoftware(): ?string
-	{
-		return $this->get('SERVER_SOFTWARE');
-	}
+    public function getLanguage(): ?string
+    {
+        return $this->get('HTTP_ACCEPT_LANGUAGE');
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getPort(): int
-	{
-		return (int) $this->get('SERVER_PORT', Http::DEFAULT_PORT);
-	}
+    public function getServerName(): ?string
+    {
+        return $this->get('SERVER_NAME');
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getScheme(): string
-	{
-		return $this->get('REQUEST_SCHEME', Http::DEFAULT_SCHEME);
-	}
+    public function getServerSoftware(): ?string
+    {
+        return $this->get('SERVER_SOFTWARE');
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getMethod(): string
-	{
-		return strtoupper($this->get('REQUEST_METHOD', Http::DEFAULT_METHOD));
-	}
-	/**
-	 * @return string|null
-	 */
-	public function getUri(): ?string
-	{
-		return $this->get('REQUEST_URI');
-	}
+    public function getPort(): int
+    {
+        return (int) $this->get('SERVER_PORT', Http::DEFAULT_PORT);
+    }
 
-	/**
-	 * @return int|null
-	 */
-	public function getTime(): ?int
-	{
-		return $this->get('REQUEST_TIME');
-	}
+    public function getScheme(): string
+    {
+        return $this->get('REQUEST_SCHEME', Http::DEFAULT_SCHEME);
+    }
 
-	/**
-	 * @return float|null
-	 */
-	public function getTimeFloat(): ?float
-	{
-		return $this->get('REQUEST_TIME_FLOAT');
-	}
+    public function getMethod(): string
+    {
+        return strtoupper($this->get('REQUEST_METHOD', Http::DEFAULT_METHOD));
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getIp(): ?string
-	{
-		return $this->get('SERVER_ADDR');
-	}
+    public function getUri(): ?string
+    {
+        return $this->get('REQUEST_URI');
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getStatusCode(): int
-	{
-		return http_response_code();
-	}
+    public function getTime(): ?int
+    {
+        return $this->get('REQUEST_TIME');
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getContentType(): ?string
-	{
-		return $this->get('CONTENT_TYPE');
-	}
+    public function getTimeFloat(): ?float
+    {
+        return $this->get('REQUEST_TIME_FLOAT');
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getHeaders(): array
-	{
-		$headers = [];
+    public function getIp(): ?string
+    {
+        return $this->get('SERVER_ADDR');
+    }
 
-		if(isset($_SERVER)) {
-			foreach ($_SERVER as $name => $value) {
-				if (substr($name, 0, 5) == 'HTTP_') {
-					$headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
-				}
-			}
-		}
+    public function getStatusCode(): int
+    {
+        return http_response_code();
+    }
 
-		return $headers;
-	}
+    public function getContentType(): ?string
+    {
+        return $this->get('CONTENT_TYPE');
+    }
 
-	/**
-	 * @return array|null
-	 */
-	public function getRequestParams(): ?array
-	{
-		$requestParams = @json_decode(file_get_contents('php://input'), true);
+    public function getHeaders(): array
+    {
+        $headers = [];
 
-		// Raw body
-		if(is_array($requestParams) && empty($requestParams) === false) {
-			return $requestParams;
-		}
+        if (isset($_SERVER)) {
+            foreach ($_SERVER as $name => $value) {
+                if (substr($name, 0, 5) == 'HTTP_') {
+                    $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+                }
+            }
+        }
 
-		// POST
-		if($this->getMethod() === 'POST' && is_array($_POST)) {
-			return $_POST;
-		}
+        return $headers;
+    }
 
-		// GET
-		if($this->getMethod() === 'GET' && is_array($_GET)) {
-			return $_GET;
-		}
+    public function getRequestParams(): ?array
+    {
+        $requestParams = @json_decode(file_get_contents('php://input'), true);
 
-		return null;
-	}
+        // Raw body
+        if (is_array($requestParams) && empty($requestParams) === false) {
+            return $requestParams;
+        }
 
-	/**
-	 * @return string|null
-	 */
-	public function getUrl(): ?string
-	{
-		if(isset($_SERVER['HTTP_HOST']) === false) {
-			return null;
-		}
+        // POST
+        if ($this->getMethod() === 'POST' && is_array($_POST)) {
+            return $_POST;
+        }
 
-		return sprintf(
-			'%s://%s/%s',
-			isset($_SERVER['HTTPS']) ? 'https' : 'http',
-			$_SERVER['HTTP_HOST'],
-			trim($_SERVER['REQUEST_URI'],'/\\')
-		);
-	}
+        // GET
+        if ($this->getMethod() === 'GET' && is_array($_GET)) {
+            return $_GET;
+        }
+
+        return null;
+    }
+
+    public function getUrl(): ?string
+    {
+        if (isset($_SERVER['HTTP_HOST']) === false) {
+            return null;
+        }
+
+        return sprintf(
+            '%s://%s/%s',
+            isset($_SERVER['HTTPS']) ? 'https' : 'http',
+            $_SERVER['HTTP_HOST'],
+            trim($_SERVER['REQUEST_URI'], '/\\')
+        );
+    }
 }

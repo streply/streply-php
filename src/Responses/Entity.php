@@ -8,49 +8,34 @@ use Streply\Streply;
 
 class Entity
 {
-	private string $eventId;
+    private string $eventId;
 
-	/**
-	 * @param string $eventId
-	 */
-	public function __construct(string $eventId)
-	{
-		$this->eventId = $eventId;
-	}
+    public function __construct(string $eventId)
+    {
+        $this->eventId = $eventId;
+    }
 
-	/**
-	 * @param string $flag
-	 * @return Entity
-	 */
-	public function flag(string $flag): Entity
-	{
-		if(false === in_array($flag, EventFlag::all(), true)) {
-			throw new StreplyException(
-				sprintf(
-					'%s is a invalid event flag',
-					$flag
-				)
-			);
-		}
+    public function flag(string $flag): Entity
+    {
+        if (false === in_array($flag, EventFlag::all(), true)) {
+            throw new StreplyException(
+                sprintf(
+                    '%s is a invalid event flag',
+                    $flag
+                )
+            );
+        }
 
-		return $this->property('flag', $flag);
-	}
+        return $this->property('flag', $flag);
+    }
 
-	/**
-	 * @param string $name
-	 * @param $value
-	 * @return Entity
-	 */
-	public function property(string $name, $value): Entity
-	{
-		Streply::Properties()->set($this->eventId, $name, $value);
+    public function property(string $name, $value): Entity
+    {
+        Streply::Properties()->set($this->eventId, $name, $value);
 
-		return $this;
-	}
+        return $this;
+    }
 
-    /**
-     * @return Entity
-     */
     public function sendImmediately(): Entity
     {
         Streply::Flush(false);
