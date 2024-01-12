@@ -6,10 +6,7 @@ namespace Streply;
 
 use Streply\Capture\Capture;
 use Streply\Logs\Logs;
-use Streply\Streply;
 use Streply\Enum\Level;
-use Streply\Request\Response;
-use Streply\Entity\Breadcrumb;
 use Streply\Responses\Entity;
 
 /**
@@ -54,7 +51,6 @@ function Exception(\Throwable $exception, array $params = [], string $level = Le
 {
 	$exception = Capture::Error($exception, $params, $level);
 
-    // Send errors immediately
     if($exception !== null) {
         $exception->sendImmediately();
     }
@@ -71,19 +67,13 @@ function Exception(\Throwable $exception, array $params = [], string $level = Le
  */
 function Activity(string $message, array $params = [], ?string $channel = null): ?Entity
 {
-	return Capture::Activity($message, $params, $channel);
-}
+	$activity = Capture::Activity($message, $params, $channel);
 
-/**
- * @param string $type
- * @param string $message
- * @param array $params
- * @return void
- * @throws Exceptions\StreplyException
- */
-function Breadcrumb(string $type, string $message, array $params = []): void
-{
-	Capture::Breadcrumb($type, $message, $params);
+    if($activity !== null) {
+        $activity->sendImmediately();
+    }
+
+    return $activity;
 }
 
 /**
@@ -95,7 +85,13 @@ function Breadcrumb(string $type, string $message, array $params = []): void
  */
 function Log(string $message, array $params = [], ?string $channel = null, string $level = Level::NORMAL): ?Entity
 {
-	return Capture::Log($message, $params, $channel, $level);
+	$log = Capture::Log($message, $params, $channel, $level);
+
+    if($log !== null) {
+        $log->sendImmediately();
+    }
+
+    return $log;
 }
 
 /**

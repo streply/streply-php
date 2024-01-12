@@ -6,12 +6,9 @@ use Streply\Enum\Level;
 use Streply\Enum\CaptureType;
 use Streply\Streply;
 use Streply\Entity\Event;
-use Streply\Request\Response;
 use Streply\Request\Handler;
 use Streply\Exceptions\NotInitializedException;
 use Streply\CodeSource;
-use Streply\Time;
-use Streply\Entity\Breadcrumb;
 use Streply\Logs\Logs;
 use Streply\Responses\Entity;
 
@@ -137,30 +134,5 @@ class Capture
 		Logs::Log('Streply is not initialized');
 
 		return null;
-	}
-
-	/**
-	 * @param string $type
-	 * @param string $message
-	 * @param array $params
-	 * @return void
-	 * @throws NotInitializedException
-	 * @throws \Streply\Exceptions\InvalidBreadcrumbTypeException
-	 * @throws \Streply\Exceptions\StreplyException
-	 */
-	public static function Breadcrumb(string $type, string $message, array $params = []): void
-	{
-		if(true === Streply::isInitialize()) {
-			$breadcrumb = new Breadcrumb(
-				Streply::traceId(),
-				Streply::traceUniqueId(),
-				$type,
-				$message,
-				$params
-			);
-
-			// Push
-			Handler::Handle($breadcrumb);
-		}
 	}
 }
