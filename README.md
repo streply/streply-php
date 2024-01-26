@@ -101,7 +101,7 @@ Streply\Activity(
     [
         'paramName' => 'paramValue'
     ],
-    '#optionalChannel' 
+    '#someChannel'
 );
 ```
 
@@ -115,7 +115,6 @@ Streply\Log(
     [
         'paramName' => 'paramValue'
     ],
-    '#optionalChannel',
     Level::CRITICAL 
 );
 ```
