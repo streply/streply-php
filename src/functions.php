@@ -24,6 +24,9 @@ function ErrorHandler()
 
 register_shutdown_function('Streply\ErrorHandler');
 set_error_handler("Streply\ErrorHandler");
+set_exception_handler(static function(\Throwable $exception)  {
+    Exception($exception);
+});
 
 function Initialize(string $dsn, array $options = [])
 {
