@@ -112,11 +112,12 @@ class Capture
         return null;
     }
 
-    public static function Log(string $message, array $params = [], string $level = Level::NORMAL): ?Entity
+    public static function Log(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
     {
         if (true === Streply::isInitialize()) {
             // Create record
             $event = Event::create(CaptureType::TYPE_LOG, $message, $params, $level);
+            $event->setChannel($channel);
 
             // Push
             Handler::Handle($event);

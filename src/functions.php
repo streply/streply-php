@@ -66,9 +66,9 @@ function Activity(string $message, array $params = [], ?string $channel = null):
     return $activity;
 }
 
-function Log(string $message, array $params = [], string $level = Level::NORMAL): ?Entity
+function Log(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
 {
-    $log = Capture::Log($message, $params, $level);
+    $log = Capture::Log($message, $params, $level, $channel);
 
     if ($log !== null) {
         $log->sendImmediately();
