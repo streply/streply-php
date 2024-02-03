@@ -35,13 +35,24 @@ function Initialize(string $dsn, array $options = [])
 
 function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
 {
-    $exception = Capture::Error($exception, $params, $level);
+    $exception = Capture::Exception($exception, $params, $level);
 
     if ($exception !== null) {
         $exception->sendImmediately();
     }
 
     return $exception;
+}
+
+function Error(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
+{
+    $error = Capture::Error($message, $params, $level, $channel);
+
+    if ($error !== null) {
+        $error->sendImmediately();
+    }
+
+    return $error;
 }
 
 function Activity(string $message, array $params = [], ?string $channel = null): ?Entity

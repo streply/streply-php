@@ -6,7 +6,6 @@ use Streply\CodeSource;
 use Streply\Entity\Event;
 use Streply\Enum\CaptureType;
 use Streply\Enum\Level;
-use Streply\Exceptions\NotInitializedException;
 use Streply\Logs\Logs;
 use Streply\Request\Handler;
 use Streply\Responses\Entity;
@@ -16,7 +15,7 @@ class Capture
 {
     private const SOURCE_LINE_NUMBERS = 10;
 
-    public static function Error(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
+    public static function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
     {
         if (true === Streply::isInitialize()) {
             // Create record
@@ -77,10 +76,24 @@ class Capture
         return null;
     }
 
-    /**
-     * @throws NotInitializedException
-     * @throws \Streply\Exceptions\StreplyException
-     */
+    public static function Error(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
+    {
+        if (true === Streply::isInitialize()) {
+            // Create record
+            $event = Event::create(CaptureType::TYPE_ERROR, $message, $params, $level);
+            $event->setChannel($channel);
+
+            // Push
+            Handler::Handle($event);
+
+            return new Entity($event->getTraceUniqueId());
+        }
+
+        Logs::Log('Streply is not initialized');
+
+        return null;
+    }
+
     public static function Activity(string $message, array $params = [], ?string $channel = null): ?Entity
     {
         if (true === Streply::isInitialize()) {
