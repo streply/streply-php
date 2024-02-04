@@ -9,7 +9,7 @@ use Streply\Input\Http;
 use Streply\Input\Options;
 use Streply\Input\Server;
 use Streply\Performance\Transactions;
-use Streply\Store\Providers\MemoryProvider;
+use Streply\Store\Providers\RequestProvider;
 use Streply\Store\Store;
 
 final class Streply
@@ -58,7 +58,7 @@ final class Streply
     public static function Initialize(string $dsn, array $options = []): void
     {
         if (isset($options['storeProvider']) === false) {
-            $options['storeProvider'] = new MemoryProvider();
+            $options['storeProvider'] = new RequestProvider();
         }
 
         self::$dsn = new Dsn($dsn);
