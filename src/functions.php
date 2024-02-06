@@ -6,6 +6,9 @@ namespace Streply;
 
 use Streply\Capture\Capture;
 use Streply\Enum\Level;
+use Streply\Exceptions\InvalidDsnException;
+use Streply\Exceptions\InvalidUserException;
+use Streply\Exceptions\StreplyException;
 use Streply\Logs\Logs;
 use Streply\Responses\Entity;
 
@@ -28,6 +31,9 @@ set_exception_handler(static function(\Throwable $exception)  {
     Exception($exception);
 });
 
+/**
+ * @throws InvalidDsnException
+ */
 function Initialize(string $dsn, array $options = [])
 {
     Streply::Initialize($dsn, $options);
@@ -55,9 +61,16 @@ function Error(string $message, array $params = [], string $level = Level::NORMA
     return $error;
 }
 
-function Activity(string $message, array $params = [], ?string $channel = null): ?Entity
+/**
+ * @throws StreplyException
+ */
+function Activity(string $message, array $params = [], ?string $channel = null, ?string $command = null): ?Entity
 {
     $activity = Capture::Activity($message, $params, $channel);
+
+    if($command !== null) {
+        $activity->flag($command);
+    }
 
     if ($activity !== null) {
         $activity->sendImmediately();
@@ -77,6 +90,9 @@ function Log(string $message, array $params = [], string $level = Level::NORMAL,
     return $log;
 }
 
+/**
+ * @throws InvalidUserException
+ */
 function User(string $userId, ?string $userName = null, array $params = []): void
 {
     Streply::User($userId, $userName, $params);
