@@ -6,6 +6,7 @@ use Streply\CodeSource;
 use Streply\Entity\Event;
 use Streply\Enum\CaptureType;
 use Streply\Enum\Level;
+use Streply\Exceptions\StreplyException;
 use Streply\Logs\Logs;
 use Streply\Request\Handler;
 use Streply\Responses\Entity;
@@ -15,6 +16,9 @@ class Capture
 {
     private const SOURCE_LINE_NUMBERS = 10;
 
+    /**
+     * @throws StreplyException
+     */
     public static function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
     {
         if (true === Streply::isInitialize()) {
@@ -76,6 +80,9 @@ class Capture
         return null;
     }
 
+    /**
+     * @throws StreplyException
+     */
     public static function Error(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
     {
         if (true === Streply::isInitialize()) {
@@ -94,12 +101,16 @@ class Capture
         return null;
     }
 
-    public static function Activity(string $message, array $params = [], ?string $channel = null): ?Entity
+    /**
+     * @throws StreplyException
+     */
+    public static function Activity(string $message, array $params = [], ?string $channel = null, ?string $flag = null): ?Entity
     {
         if (true === Streply::isInitialize()) {
             // Create record
             $event = Event::create(CaptureType::TYPE_ACTIVITY, $message, $params);
             $event->setChannel($channel);
+            $event->setFlag($flag);
 
             // Push
             Handler::Handle($event);
@@ -112,6 +123,9 @@ class Capture
         return null;
     }
 
+    /**
+     * @throws StreplyException
+     */
     public static function Log(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
     {
         if (true === Streply::isInitialize()) {

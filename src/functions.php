@@ -39,6 +39,9 @@ function Initialize(string $dsn, array $options = [])
     Streply::Initialize($dsn, $options);
 }
 
+/**
+ * @throws StreplyException
+ */
 function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
 {
     $exception = Capture::Exception($exception, $params, $level);
@@ -50,6 +53,9 @@ function Exception(\Throwable $exception, array $params = [], string $level = Le
     return $exception;
 }
 
+/**
+ * @throws StreplyException
+ */
 function Error(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
 {
     $error = Capture::Error($message, $params, $level, $channel);
@@ -64,13 +70,9 @@ function Error(string $message, array $params = [], string $level = Level::NORMA
 /**
  * @throws StreplyException
  */
-function Activity(string $message, array $params = [], ?string $channel = null, ?string $command = null): ?Entity
+function Activity(string $message, array $params = [], ?string $channel = null, ?string $flag = null): ?Entity
 {
-    $activity = Capture::Activity($message, $params, $channel);
-
-    if($command !== null) {
-        $activity->flag($command);
-    }
+    $activity = Capture::Activity($message, $params, $channel, $flag);
 
     if ($activity !== null) {
         $activity->sendImmediately();
@@ -79,6 +81,9 @@ function Activity(string $message, array $params = [], ?string $channel = null, 
     return $activity;
 }
 
+/**
+ * @throws StreplyException
+ */
 function Log(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
 {
     $log = Capture::Log($message, $params, $level, $channel);
