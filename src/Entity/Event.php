@@ -112,6 +112,8 @@ class Event implements EntityInterface
 
     private ?string $flag;
 
+    private ?string $dir;
+
     public static function create(string $type, string $message, array $params = [], string $level = Level::NORMAL): Event
     {
         $record = new Event(
@@ -177,6 +179,7 @@ class Event implements EntityInterface
         $this->serverMemoryPeakUsage = $server->getMemoryPeakUsage();
         $this->apiClientVersion = Streply::API_VERSION;
         $this->flag = null;
+        $this->dir = getcwd() === false ? null : getcwd();
     }
 
     public function getTraceUniqueId(): string
@@ -413,6 +416,7 @@ class Event implements EntityInterface
             'apiClientVersion' => $this->apiClientVersion,
             'user' => Streply::$user === null ? null : Streply::$user->toArray(),
             'flag' => $this->flag,
+            'dir' => $this->dir,
         ];
     }
 
