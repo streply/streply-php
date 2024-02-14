@@ -34,25 +34,6 @@ Streply\Initialize(
 );
 ```
 
-### Filter events before send
-
-```php
-<?php
-
-Streply\Initialize(
-    'https://clientPublicKey@api.streply.com/projectId',
-    [
-        'filterBeforeSend' => function(Event $event): bool {
-            if($event->getMessage() === 'someMessage') {
-                return false;
-            }
-            
-            return true;
-        }
-    ]
-);
-```
-
 ## Capture
 
 ### Exception
@@ -157,6 +138,52 @@ or with parameters and name
 ```php
 Streply\User('joey@streply.com', 'Joey Tribbiani', [
     'createdAt' => '2022-11-10 15:10:32'
+]);
+```
+
+## Configuration
+
+### Filter events before send
+
+```php
+<?php
+
+Streply\Initialize(
+    'https://clientPublicKey@api.streply.com/projectId',
+    [
+        'filterBeforeSend' => function(\Streply\Entity\Event $event): bool {
+            if($event->getMessage() === 'someMessage') {
+                return false;
+            }
+            
+            return true;
+        }
+    ]
+);
+```
+
+Also, you can change all options later:
+
+```php
+<?php
+
+Streply\Configuration::filterBeforeSend(function(\Streply\Entity\Event $event) {
+    if($event->getMessage() === 'someMessage') {
+        return false;
+    }
+
+    return true;
+});
+```
+
+### Ignore Exceptions
+
+```php
+<?php
+
+Streply\Configuration::ignoreExceptions([
+    App\Exception\QueryException::class,
+    App\Exception\InvalidAuthorizationException::class,
 ]);
 ```
 

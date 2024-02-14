@@ -14,7 +14,7 @@ use Streply\Store\Store;
 
 final class Streply
 {
-    public const API_VERSION = '0.0.47';
+    public const API_VERSION = '0.0.56';
 
     private const UNIQUE_TRACE_ID_FORMAT = '%s_%d';
 

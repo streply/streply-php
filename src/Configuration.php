@@ -24,4 +24,9 @@ class Configuration
     {
         Streply::getOptions()->set('release', $release);
     }
+
+    public static function ignoreExceptions(array $exception): void
+    {
+        Streply::getOptions()->set('ignoreExceptions', $exception);
+    }
 }

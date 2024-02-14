@@ -22,6 +22,19 @@ class Capture
     public static function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
     {
         if (true === Streply::isInitialize()) {
+            // Ignore exceptions
+            if(Streply::getOptions()->has('ignoreExceptions')) {
+                $ignoredExceptions = Streply::getOptions()->get('ignoreExceptions');
+
+                if(is_array($ignoredExceptions)) {
+                    foreach($ignoredExceptions as $ignoredException) {
+                        if($exception instanceof $ignoredException) {
+                            return null;
+                        }
+                    }
+                }
+            }
+
             // Create record
             $event = Event::create(CaptureType::TYPE_ERROR, $exception->getMessage(), $params, $level);
             $event->setFile($exception->getFile());
