@@ -2,44 +2,33 @@
 
 namespace Streply\Responses;
 
-use Streply\Enum\EventFlag;
-use Streply\Exceptions\StreplyException;
-use Streply\Streply;
+use Streply\Entity\Event;
+use Streply\Request\Response;
 
 class Entity
 {
-    private string $eventId;
+    private Event $event;
 
-    public function __construct(string $eventId)
+    private Response $response;
+
+    public function __construct(Event $event, Response $response)
     {
-        $this->eventId = $eventId;
+        $this->event = $event;
+        $this->response = $response;
     }
 
-    public function flag(string $flag): Entity
+    public function eventId(): string
     {
-        if (false === in_array($flag, EventFlag::all(), true)) {
-            throw new StreplyException(
-                sprintf(
-                    '%s is a invalid event flag',
-                    $flag
-                )
-            );
-        }
-
-        return $this->property('flag', $flag);
+        return $this->event->getTraceUniqueId();
     }
 
-    public function property(string $name, $value): Entity
+    public function event(): Event
     {
-        Streply::Properties()->set($this->eventId, $name, $value);
-
-        return $this;
+        return $this->event;
     }
 
-    public function sendImmediately(): Entity
+    public function response(): Response
     {
-        Streply::Flush(false);
-
-        return $this;
+        return $this->response;
     }
 }

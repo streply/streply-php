@@ -9,12 +9,10 @@ use Streply\Input\Http;
 use Streply\Input\Options;
 use Streply\Input\Server;
 use Streply\Performance\Transactions;
-use Streply\Store\Providers\RequestProvider;
-use Streply\Store\Store;
 
 final class Streply
 {
-    public const API_VERSION = '0.0.56';
+    public const API_VERSION = '0.0.57';
 
     private const UNIQUE_TRACE_ID_FORMAT = '%s_%d';
 
@@ -57,10 +55,6 @@ final class Streply
      */
     public static function Initialize(string $dsn, array $options = []): void
     {
-        if (isset($options['storeProvider']) === false) {
-            $options['storeProvider'] = new RequestProvider();
-        }
-
         self::$dsn = new Dsn($dsn);
         self::$options = new Options($options);
         self::$http = new Http($_SERVER);
@@ -137,18 +131,6 @@ final class Streply
     public static function getPerformanceTransactions(): Transactions
     {
         return self::$performanceTransactions;
-    }
-
-    public static function Flush(): void
-    {
-        if (true === self::isInitialize()) {
-            // Close
-            $store = new Store(Streply::$options->get('storeProvider'));
-            $store->close(Streply::traceId());
-
-            // Log
-            Logs\Logs::Log('Flush');
-        }
     }
 
     public static function getInstance(): Streply

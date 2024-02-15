@@ -8,7 +8,6 @@ use Streply\Capture\Capture;
 use Streply\Enum\Level;
 use Streply\Exceptions\InvalidDsnException;
 use Streply\Exceptions\InvalidUserException;
-use Streply\Exceptions\StreplyException;
 use Streply\Logs\Logs;
 use Streply\Responses\Entity;
 
@@ -27,7 +26,7 @@ function ErrorHandler()
 
 register_shutdown_function('Streply\ErrorHandler');
 set_error_handler("Streply\ErrorHandler");
-set_exception_handler(static function(\Throwable $exception)  {
+set_exception_handler(static function (\Throwable $exception) {
     Exception($exception);
 });
 
@@ -39,60 +38,24 @@ function Initialize(string $dsn, array $options = [])
     Streply::Initialize($dsn, $options);
 }
 
-/**
- * @throws StreplyException
- */
 function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
 {
-    $exception = Capture::Exception($exception, $params, $level);
-
-    if ($exception !== null) {
-        $exception->sendImmediately();
-    }
-
-    return $exception;
+    return Capture::Exception($exception, $params, $level);
 }
 
-/**
- * @throws StreplyException
- */
 function Error(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
 {
-    $error = Capture::Error($message, $params, $level, $channel);
-
-    if ($error !== null) {
-        $error->sendImmediately();
-    }
-
-    return $error;
+    return Capture::Error($message, $params, $level, $channel);
 }
 
-/**
- * @throws StreplyException
- */
 function Activity(string $message, array $params = [], ?string $channel = null, ?string $flag = null): ?Entity
 {
-    $activity = Capture::Activity($message, $params, $channel, $flag);
-
-    if ($activity !== null) {
-        $activity->sendImmediately();
-    }
-
-    return $activity;
+    return Capture::Activity($message, $params, $channel, $flag);
 }
 
-/**
- * @throws StreplyException
- */
 function Log(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
 {
-    $log = Capture::Log($message, $params, $level, $channel);
-
-    if ($log !== null) {
-        $log->sendImmediately();
-    }
-
-    return $log;
+    return Capture::Log($message, $params, $level, $channel);
 }
 
 /**
@@ -106,9 +69,4 @@ function User(string $userId, ?string $userName = null, array $params = []): voi
 function Logs(): array
 {
     return Logs::all();
-}
-
-function Flush(): void
-{
-    Streply::Flush();
 }

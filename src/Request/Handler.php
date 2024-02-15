@@ -3,25 +3,46 @@
 namespace Streply\Request;
 
 use Streply\Entity\EntityInterface;
-use Streply\Exceptions\StreplyException;
-use Streply\Store\Providers\StoreProviderInterface;
-use Streply\Store\Store;
+use Streply\Entity\Event;
 use Streply\Streply;
 
 class Handler
 {
-    public static function Handle(EntityInterface $event): void
-    {
-        if ($event->isAllowedRequest()) {
-            $storeProvider = Streply::getOptions()->get('storeProvider');
+    private EntityInterface $event;
 
-            if (! ($storeProvider instanceof StoreProviderInterface)) {
-                throw new StreplyException('Invalid store provider');
+    public function __construct(EntityInterface $event)
+    {
+        $this->event = $event;
+    }
+
+    public function handle(): ?Response
+    {
+        if ($this->event->isAllowedRequest()) {
+            $validationError = $this->event->getValidationError();
+
+            if ($validationError !== null) {
+                return Response::Error($validationError);
             }
 
-            // Store request
-            $store = new Store($storeProvider);
-            $store->push($event);
+            if (Streply::getOptions()->has('filterBeforeSend') && $this->event instanceof Event) {
+                $filterBeforeSend = Streply::getOptions()->get('filterBeforeSend');
+
+                if (is_callable($filterBeforeSend)) {
+                    $filterBeforeSendOutput = $filterBeforeSend($this->event);
+
+                    if ($filterBeforeSendOutput === false) {
+                        return Response::Error('Request was filtered');
+                    }
+                }
+            }
+
+            if (method_exists($this->event, 'importFromProperties')) {
+                $this->event->importFromProperties(Streply::Properties());
+            }
+
+            return Request::execute($this->event->toJson());
         }
+
+        return Response::Error('Invalid request');
     }
 }

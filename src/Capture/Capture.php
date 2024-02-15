@@ -6,7 +6,6 @@ use Streply\CodeSource;
 use Streply\Entity\Event;
 use Streply\Enum\CaptureType;
 use Streply\Enum\Level;
-use Streply\Exceptions\StreplyException;
 use Streply\Logs\Logs;
 use Streply\Request\Handler;
 use Streply\Responses\Entity;
@@ -16,19 +15,16 @@ class Capture
 {
     private const SOURCE_LINE_NUMBERS = 10;
 
-    /**
-     * @throws StreplyException
-     */
     public static function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
     {
         if (true === Streply::isInitialize()) {
             // Ignore exceptions
-            if(Streply::getOptions()->has('ignoreExceptions')) {
+            if (Streply::getOptions()->has('ignoreExceptions')) {
                 $ignoredExceptions = Streply::getOptions()->get('ignoreExceptions');
 
-                if(is_array($ignoredExceptions)) {
-                    foreach($ignoredExceptions as $ignoredException) {
-                        if($exception instanceof $ignoredException) {
+                if (is_array($ignoredExceptions)) {
+                    foreach ($ignoredExceptions as $ignoredException) {
+                        if ($exception instanceof $ignoredException) {
                             return null;
                         }
                     }
@@ -83,9 +79,9 @@ class Capture
             }
 
             // Push
-            Handler::Handle($event);
+            $handler = new Handler($event);
 
-            return new Entity($event->getTraceUniqueId());
+            return new Entity($event, $handler->handle());
         }
 
         Logs::Log('Streply is not initialized');
@@ -93,9 +89,6 @@ class Capture
         return null;
     }
 
-    /**
-     * @throws StreplyException
-     */
     public static function Error(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
     {
         if (true === Streply::isInitialize()) {
@@ -104,9 +97,9 @@ class Capture
             $event->setChannel($channel);
 
             // Push
-            Handler::Handle($event);
+            $handler = new Handler($event);
 
-            return new Entity($event->getTraceUniqueId());
+            return new Entity($event, $handler->handle());
         }
 
         Logs::Log('Streply is not initialized');
@@ -114,9 +107,6 @@ class Capture
         return null;
     }
 
-    /**
-     * @throws StreplyException
-     */
     public static function Activity(string $message, array $params = [], ?string $channel = null, ?string $flag = null): ?Entity
     {
         if (true === Streply::isInitialize()) {
@@ -126,9 +116,9 @@ class Capture
             $event->setFlag($flag);
 
             // Push
-            Handler::Handle($event);
+            $handler = new Handler($event);
 
-            return new Entity($event->getTraceUniqueId());
+            return new Entity($event, $handler->handle());
         }
 
         Logs::Log('Streply is not initialized');
@@ -136,9 +126,6 @@ class Capture
         return null;
     }
 
-    /**
-     * @throws StreplyException
-     */
     public static function Log(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
     {
         if (true === Streply::isInitialize()) {
@@ -147,9 +134,9 @@ class Capture
             $event->setChannel($channel);
 
             // Push
-            Handler::Handle($event);
+            $handler = new Handler($event);
 
-            return new Entity($event->getTraceUniqueId());
+            return new Entity($event, $handler->handle());
         }
 
         Logs::Log('Streply is not initialized');
