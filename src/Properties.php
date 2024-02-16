@@ -16,14 +16,6 @@ class Properties
         return isset($this->parameters[$collectionName][$name]);
     }
 
-    public function set(string $collectionName, string $name, $value): void
-    {
-        $this->parameters[$collectionName][$name] = $value;
-    }
-
-    /**
-     * @return mixed|null
-     */
     public function get(string $collectionName, string $name, $default = null)
     {
         if ($this->has($collectionName, $name) === false) {
@@ -33,13 +25,28 @@ class Properties
         return $this->parameters[$collectionName][$name];
     }
 
-    public function setForPerformance(string $name, $value): void
+    public function delete(string $collectionName, string $name): void
     {
-        $this->set('performance', $name, $value);
+        if ($this->has($collectionName, $name) === true) {
+            unset($this->parameters[$collectionName][$name]);
+        }
     }
 
-    public function setForEvent(string $name, $value): void
+    private function set(string $collectionName, string $name, $value, bool $clearAfterRequest = false): void
     {
-        $this->set('event', $name, $value);
+        $this->parameters[$collectionName][$name] = [
+            'value' => $value,
+            'clearAfterRequest' => $clearAfterRequest,
+        ];
+    }
+
+    public function setForPerformance(string $name, $value, bool $clearAfterRequest = false): void
+    {
+        $this->set('performance', $name, $value, $clearAfterRequest);
+    }
+
+    public function setForEvent(string $name, $value, bool $clearAfterRequest = false): void
+    {
+        $this->set('event', $name, $value, $clearAfterRequest);
     }
 }

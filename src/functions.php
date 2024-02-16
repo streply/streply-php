@@ -43,19 +43,33 @@ function Exception(\Throwable $exception, array $params = [], string $level = Le
     return Capture::Exception($exception, $params, $level);
 }
 
-function Error(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
+function Error(string $message, array $params = [], string $level = Level::NORMAL): ?Entity
 {
-    return Capture::Error($message, $params, $level, $channel);
+    return Capture::Error($message, $params, $level);
 }
 
-function Activity(string $message, array $params = [], ?string $channel = null, ?string $flag = null): ?Entity
+function Activity(string $message, array $params = []): ?Entity
 {
-    return Capture::Activity($message, $params, $channel, $flag);
+    return Capture::Activity($message, $params);
 }
 
-function Log(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
+function Log(string $message, array $params = []): ?Entity
 {
-    return Capture::Log($message, $params, $level, $channel);
+    return Capture::Log($message, $params);
+}
+
+function setScope(callable $callback): void
+{
+    $callback(new Scope());
+}
+
+function withScope(callable $callback): void
+{
+    $callback(
+        new Scope(
+            false
+        )
+    );
 }
 
 /**

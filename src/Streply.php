@@ -12,7 +12,7 @@ use Streply\Performance\Transactions;
 
 final class Streply
 {
-    public const API_VERSION = '0.0.57';
+    public const API_VERSION = '0.0.58';
 
     private const UNIQUE_TRACE_ID_FORMAT = '%s_%d';
 

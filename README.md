@@ -10,8 +10,6 @@ composer require streply/streply-php
 Initialize Streply on beginning your code.
 
 ```php
-<?php
-
 Streply\Initialize('https://clientPublicKey@api.streply.com/projectId');
 ```
 
@@ -23,8 +21,6 @@ Where:
 Initialization with parameters
 
 ```php
-<?php
-
 Streply\Initialize(
     'https://clientPublicKey@api.streply.com/projectId',
     [
@@ -39,8 +35,6 @@ Streply\Initialize(
 ### Exception
 
 ```php
-<?php
-
 try {
     if(true) {
         throw new \Exceptions\SomeException('Exception message here');
@@ -53,8 +47,6 @@ try {
 ### Exception with params and capture level
 
 ```php
-<?php
-
 use Streply\Enum\Level;
 
 try {
@@ -72,32 +64,16 @@ try {
 }
 ```
 
-### Activity
-
-```php
-<?php
-
-Streply\Activity(
-    'message', 
-    [
-        'paramName' => 'paramValue'
-    ],
-    '#someChannel'
-);
-```
-
 ### Log
 
 ```php
-<?php
+Streply\Log('log.name', ['paramName' => 'paramValue']);
+```
 
-Streply\Log(
-    'log.name', 
-    [
-        'paramName' => 'paramValue'
-    ],
-    Level::CRITICAL 
-);
+### Activity
+
+```php
+Streply\Activity('message', ['paramName' => 'paramValue']);
 ```
 
 ### Capture levels
@@ -143,11 +119,36 @@ Streply\User('joey@streply.com', 'Joey Tribbiani', [
 
 ## Configuration
 
+### Scopes
+
+The `setScope` helper will set up the scope for all events captured by the Streply SDK.
+
+```php
+\Streply\setScope(function (\Streply\Scope $scope): void {
+    $scope->setChannel('my-chanel');
+});
+```
+
+If you want to change the scope for a single event, you can use the withScope helper instead. This helper does not retain the scope changes made.
+
+```php
+\Streply\withScope(function (\Streply\Scope $scope): void {
+    $scope->setChannel('my-chanel');
+    
+    \Streply\Log('my log with channel');
+});
+```
+
+Available methods in scope:
+
+- `setChannel`
+- `setFlag`
+- `setRelease`
+- `setEnvironment`
+
 ### Filter events before send
 
 ```php
-<?php
-
 Streply\Initialize(
     'https://clientPublicKey@api.streply.com/projectId',
     [
@@ -162,11 +163,9 @@ Streply\Initialize(
 );
 ```
 
-Also, you can change all options later:
+Additionally, you have the flexibility to modify all choices at a later time:
 
 ```php
-<?php
-
 Streply\Configuration::filterBeforeSend(function(\Streply\Entity\Event $event) {
     if($event->getMessage() === 'someMessage') {
         return false;
@@ -179,8 +178,6 @@ Streply\Configuration::filterBeforeSend(function(\Streply\Entity\Event $event) {
 ### Ignore Exceptions
 
 ```php
-<?php
-
 Streply\Configuration::ignoreExceptions([
     App\Exception\QueryException::class,
     App\Exception\InvalidAuthorizationException::class,
@@ -190,7 +187,5 @@ Streply\Configuration::ignoreExceptions([
 ## Display logs
 
 ```php
-<?php
-
 print_r(Streply\Logs());
 ```

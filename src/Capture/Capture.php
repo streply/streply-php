@@ -89,12 +89,11 @@ class Capture
         return null;
     }
 
-    public static function Error(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
+    public static function Error(string $message, array $params = [], string $level = Level::NORMAL): ?Entity
     {
         if (true === Streply::isInitialize()) {
             // Create record
             $event = Event::create(CaptureType::TYPE_ERROR, $message, $params, $level);
-            $event->setChannel($channel);
 
             // Push
             $handler = new Handler($event);
@@ -107,13 +106,11 @@ class Capture
         return null;
     }
 
-    public static function Activity(string $message, array $params = [], ?string $channel = null, ?string $flag = null): ?Entity
+    public static function Activity(string $message, array $params = []): ?Entity
     {
         if (true === Streply::isInitialize()) {
             // Create record
             $event = Event::create(CaptureType::TYPE_ACTIVITY, $message, $params);
-            $event->setChannel($channel);
-            $event->setFlag($flag);
 
             // Push
             $handler = new Handler($event);
@@ -126,12 +123,11 @@ class Capture
         return null;
     }
 
-    public static function Log(string $message, array $params = [], string $level = Level::NORMAL, ?string $channel = null): ?Entity
+    public static function Log(string $message, array $params = []): ?Entity
     {
         if (true === Streply::isInitialize()) {
             // Create record
-            $event = Event::create(CaptureType::TYPE_LOG, $message, $params, $level);
-            $event->setChannel($channel);
+            $event = Event::create(CaptureType::TYPE_LOG, $message, $params);
 
             // Push
             $handler = new Handler($event);

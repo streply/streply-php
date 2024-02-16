@@ -475,12 +475,16 @@ class Event implements EntityInterface
             $properties->collection('event')
         );
 
-        foreach ($collections as $name => $value) {
+        foreach ($collections as $name => $property) {
             if (
                 in_array($name, self::ALLOWED_PARAMETERS, true) &&
                 property_exists($this, $name)
             ) {
-                $this->{$name} = $value;
+                $this->{$name} = $property['value'];
+
+                if ($property['clearAfterRequest'] === true) {
+                    \Streply\Streply::Properties()->delete('event', $name);
+                }
             }
         }
     }
