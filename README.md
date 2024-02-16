@@ -129,7 +129,7 @@ The `setScope` helper will set up the scope for all events captured by the Strep
 });
 ```
 
-If you want to change the scope for a single event, you can use the withScope helper instead. This helper does not retain the scope changes made.
+If you want to change the scope for a single event, you can use the `withScope` helper instead. This helper does not retain the scope changes made.
 
 ```php
 \Streply\withScope(function (\Streply\Scope $scope): void {
