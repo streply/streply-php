@@ -13,7 +13,7 @@ use Streply\Streply;
 
 class Capture
 {
-    private const SOURCE_LINE_NUMBERS = 10;
+    public const SOURCE_LINE_NUMBERS = 10;
 
     public static function Exception(\Throwable $exception, array $params = [], string $level = Level::NORMAL): ?Entity
     {
@@ -64,19 +64,7 @@ class Capture
                 [],
                 CodeSource::load($exception->getFile(), $exception->getLine(), self::SOURCE_LINE_NUMBERS)
             );
-
-            foreach ($exception->getTrace() as $trace) {
-                if (isset($trace['file'], $trace['line'])) {
-                    $event->addTrace(
-                        $trace['file'],
-                        $trace['line'],
-                        $trace['function'] ?? null,
-                        $trace['class'] ?? null,
-                        $trace['args'] ?? [],
-                        CodeSource::load($trace['file'], $trace['line'], self::SOURCE_LINE_NUMBERS)
-                    );
-                }
-            }
+            $event->addTraces($exception->getTrace());
 
             // Push
             $handler = new Handler($event);
@@ -94,6 +82,7 @@ class Capture
         if (true === Streply::isInitialize()) {
             // Create record
             $event = Event::create(CaptureType::TYPE_ERROR, $message, $params, $level);
+            $event->addTraces(debug_backtrace());
 
             // Push
             $handler = new Handler($event);
@@ -128,6 +117,10 @@ class Capture
         if (true === Streply::isInitialize()) {
             // Create record
             $event = Event::create(CaptureType::TYPE_LOG, $message, $params);
+
+            if (Streply::getOptions()->get('backTraceInLogs', false) === true) {
+                $event->addTraces(debug_backtrace());
+            }
 
             // Push
             $handler = new Handler($event);

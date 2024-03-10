@@ -2,6 +2,8 @@
 
 namespace Streply\Entity;
 
+use Streply\Capture\Capture;
+use Streply\CodeSource;
 use Streply\Enum\CaptureType;
 use Streply\Enum\Level;
 use Streply\Input\Dsn;
@@ -351,6 +353,22 @@ class Event implements EntityInterface
             'args' => [],
             'source' => $source,
         ];
+    }
+
+    public function addTraces(array $traces): void
+    {
+        foreach ($traces as $trace) {
+            if (isset($trace['file'], $trace['line'])) {
+                $this->addTrace(
+                    $trace['file'],
+                    $trace['line'],
+                    $trace['function'] ?? null,
+                    $trace['class'] ?? null,
+                    $trace['args'] ?? [],
+                    CodeSource::load($trace['file'], $trace['line'], Capture::SOURCE_LINE_NUMBERS)
+                );
+            }
+        }
     }
 
     public function getFlag(): ?string

@@ -29,4 +29,9 @@ class Configuration
     {
         Streply::getOptions()->set('ignoreExceptions', $exception);
     }
+
+    public static function backTraceInLogs(): void
+    {
+        Streply::getOptions()->set('backTraceInLogs', true);
+    }
 }
