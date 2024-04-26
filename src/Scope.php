@@ -39,6 +39,6 @@ class Scope
 
     public function setEnvironment(string $environment): self
     {
-        return $this->set('release', $environment);
+        return $this->set('environment', $environment);
     }
 }
